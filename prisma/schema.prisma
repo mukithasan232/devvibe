@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------
+// Product Management (Inventory)
+// ---------------------------------------------
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  imageUrl    String?  // Handled structurally as WebP optimized by Next.js
+  category    String   @default("Round Neck") // Round Neck, Drop Shoulder, Minimalist
+  
+  // Specific inventory sizing
+  stockM      Int      @default(0)
+  stockL      Int      @default(0)
+  stockXL     Int      @default(0)
+  stockXXL    Int      @default(0)
+  
+  isPublished Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems  OrderItem[]
+}
+
+// ---------------------------------------------
+// Automated Order Workflow
+// ---------------------------------------------
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  SSLCOMMERZ
+  AMARPAY
+  BKASH_MANUAL
+  NAGAD_MANUAL
+  CASH_ON_DELIVERY
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  serializedId    String      @unique // e.g., DV-YYYYMMDD-XXXX
+  
+  // Customer Info
+  customerName    String
+  customerPhone   String
+  customerAddress String
+  
+  totalAmount     Float
+  status          OrderStatus @default(PENDING)
+  trackingUrl     String?     // Assigned directly after Shipped status triggered
+  invoiceUrl      String?     // Persisted PDF Invoice link for quick lookup
+  
+  // Payment Tracking
+  paymentMethod   PaymentMethod @default(CASH_ON_DELIVERY)
+  isPaid          Boolean       @default(false)
+  trxId           String?       // Transaction ID for manual bKash/Nagad verification
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Bi-directional relation mapping
+  items           OrderItem[]
+}
+
+// Interstitial model handling cart to order compilation
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  size      String  // Captured enum: "M", "L", "XL", "XXL"
+  quantity  Int     @default(1)
+  price     Float   // Snapshot price at purchase point
+
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+// ---------------------------------------------
+// Admin Authentication (Simple Password Hashing)
+// ---------------------------------------------
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
