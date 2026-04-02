@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { User } from "lucide-react";
+import { User, Lock } from "lucide-react";
 import CartHeaderIcon from "@/components/cart/CartHeaderIcon";
 import { Providers } from "@/components/Providers";
 import { LanguageProvider } from "@/components/LanguageContext";
@@ -109,11 +109,14 @@ export default function RootLayout({
                 ))}
               </nav>
               <div className="flex items-center gap-4">
-                <LanguageToggle />
-                <Link href="/profile" className="p-2 text-brand-text hover:text-brand-neon transition-colors" aria-label="Customer Profile">
-                  <User size={20} />
-                </Link>
-                <CartHeaderIcon />
+                  <LanguageToggle />
+                  <Link href="/admin/login" className="p-2 text-brand-muted hover:text-brand-neon transition-colors" title="Admin Control">
+                    <Lock size={18} />
+                  </Link>
+                  <Link href="/profile" className="p-2 text-brand-text hover:text-brand-neon transition-colors" aria-label="Customer Profile">
+                    <User size={20} />
+                  </Link>
+                  <CartHeaderIcon />
               </div>
             </div>
           </div>
