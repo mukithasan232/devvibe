@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useLanguage } from "@/components/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function HomeClient() {
   const { addToCart } = useCart();
@@ -54,6 +55,19 @@ export default function HomeClient() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
       />
+
+      {/* Above-the-Fold Trust Banner */}
+      <div className="bg-brand-neon text-brand-bg py-2 w-full overflow-hidden whitespace-nowrap border-b border-brand-neon/20">
+        <div className="flex animate-marquee gap-10 items-center whitespace-nowrap">
+          {[...Array(5)].map((_, i) => (
+            <span key={i} className="text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2">
+              <Star size={10} fill="currentColor" /> Free Delivery in Bangladesh 
+              <ShieldCheck size={10} /> Premium 220 GSM Bio-Washed Cotton
+              <Leaf size={10} /> 100% Organic Verified Source
+            </span>
+          ))}
+        </div>
+      </div>
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-32">
@@ -167,23 +181,15 @@ export default function HomeClient() {
                     Pre-Order
                   </div>
                 )}
-                <div className="w-full h-full rounded bg-gradient-to-br from-brand-card to-brand-bg flex items-center justify-center border border-brand-paper relative overflow-hidden">
-                  <div className="absolute top-4 left-4 bg-brand-bg/80 text-brand-text text-[10px] px-2 py-1 rounded font-mono">
-                    {product.gsm}
-                  </div>
-                  <img 
+                <div className="relative w-full h-full overflow-hidden rounded-lg">
+                  <Image 
                     src={product.imageUrl} 
                     alt={product.name}
-                    className="w-full h-full object-cover transform transition-transform group-hover:scale-110"
-                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    fill
+                    className="object-contain group-hover:scale-110 transition-transform duration-500 p-4"
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    priority={idx === 0}
                   />
-                  {/* Fallback svg if image fails */}
-                  <div className="absolute inset-0 flex items-center justify-center -z-10 bg-brand-paper">
-                    <svg className="w-16 h-16 text-brand-card" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M22 6.04V7v5h-4.04c-.66-2.53-2.92-4.42-5.63-4.5V1H9L2.09 6.84L4 9l1-1v13h14V8l2.97-2.33zM15 14c0 2.22-1.78 4-4 4s-4-1.78-4-4s1.78-4 4-4 4 1.78 4 4z"/>
-                    </svg>
-                  </div>
-                </div>
                   <div className="absolute inset-0 bg-brand-bg/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 backdrop-blur-sm">
                     <motion.button 
                       whileTap={{ scale: 0.9 }}
@@ -192,44 +198,34 @@ export default function HomeClient() {
                     >
                       <AnimatePresence mode="wait">
                         {addedItem === product.id ? (
-                          <motion.div
-                            key="check"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            exit={{ scale: 0 }}
-                          >
+                          <motion.div key="check" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
                             <Check size={20} />
                           </motion.div>
                         ) : (
-                          <motion.div
-                            key="cart"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            exit={{ scale: 0 }}
-                          >
+                          <motion.div key="cart" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}>
                             <ShoppingBag size={20} />
                           </motion.div>
-                        )
-                        }
+                        )}
                       </AnimatePresence>
                     </motion.button>
                   </div>
                 </div>
-                <div className="p-5 flex flex-col flex-grow">
-                  <div className="text-brand-muted text-[10px] font-mono mb-2">{product.category}</div>
-                  <h3 className="text-white font-medium mb-1 line-clamp-1">{product.name}</h3>
-                  <div className="flex items-center justify-between mt-auto pt-4">
-                    <span className="text-lg font-bold text-white">৳{product.price}</span>
-                    <button 
-                      onClick={() => handleAddToCart(product)}
-                      className="text-xs font-bold text-brand-neon hover:underline transition-all flex items-center gap-1"
-                    >
-                      {addedItem === product.id ? <><Check size={14} /> Added</> : (product.isPreOrder ? "Pre-order" : t.shopNow)}
-                    </button>
-                  </div>
+              </div>
+              <div className="p-5 flex flex-col flex-grow">
+                <div className="text-brand-muted text-[10px] font-mono mb-2">{product.category}</div>
+                <h3 className="text-white font-medium mb-1 line-clamp-1">{product.name}</h3>
+                <div className="flex items-center justify-between mt-auto pt-4">
+                  <span className="text-lg font-bold text-white">৳{product.price}</span>
+                  <button 
+                    onClick={() => handleAddToCart(product)}
+                    className="text-xs font-bold text-brand-neon hover:underline transition-all flex items-center gap-1"
+                  >
+                    {addedItem === product.id ? <><Check size={14} /> Added</> : (product.isPreOrder ? "Pre-order" : t.shopNow)}
+                  </button>
                 </div>
-              </motion.div>
-            ))}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
