@@ -156,6 +156,7 @@ export default function RootLayout({
                 <ul className="space-y-2 text-sm text-brand-muted">
                   <li><Link href="/" className="hover:text-brand-neon transition-colors">Shop</Link></li>
                   <li><Link href="/admin/orders" className="hover:text-brand-neon transition-colors">Track Order</Link></li>
+                  <li><Link href="/admin/login" className="hover:text-brand-neon transition-colors opacity-50 hover:opacity-100">Admin Portal</Link></li>
                   <li><Link href="/" className="hover:text-brand-neon transition-colors">Return Policy</Link></li>
                   <li><Link href="/" className="hover:text-brand-neon transition-colors">Contact Us</Link></li>
                 </ul>
