@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/components/cart/CartContext";
 import { useLanguage } from "@/components/LanguageContext";
 import { ArrowRight, CheckCircle, ShieldCheck, Trash2, Plus, Minus } from "lucide-react";
@@ -10,7 +10,12 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function CheckoutPage() {
   const { items, totalAmount, clearCart, updateQuantity, removeFromCart } = useCart();
   const { t } = useLanguage();
+  const [mounted, setMounted] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("SSLCOMMERZ");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const [trxId, setTrxId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -258,7 +263,7 @@ export default function CheckoutPage() {
           <div className="bg-brand-paper p-8 rounded-2xl border border-brand-card sticky top-24">
             <h2 className="text-xl font-semibold text-white mb-6">{t.orderSummary}</h2>
             
-            {items.length === 0 ? (
+            {!mounted || items.length === 0 ? (
               <p className="text-brand-muted py-4">Your execution payload is empty.</p>
             ) : (
               <div className="space-y-6 mb-6">
@@ -312,32 +317,42 @@ export default function CheckoutPage() {
               </div>
             )}
 
-            <div className="border-t border-brand-card py-4 space-y-3 mb-6">
-              <div className="flex justify-between text-brand-muted text-sm">
-                <span>{t.subtotal}</span>
-                <span>৳{totalAmount}</span>
+            {!mounted ? (
+              <div className="animate-pulse space-y-4">
+                <div className="h-4 bg-brand-card rounded w-3/4"></div>
+                <div className="h-4 bg-brand-card rounded w-1/2"></div>
+                <div className="h-8 bg-brand-card rounded w-full mt-6"></div>
               </div>
-              {discount > 0 && (
-                <div className="flex justify-between text-brand-neon text-sm font-mono">
-                  <span>{t.studentDiscount}</span>
-                  <span>-৳{Math.round(totalAmount * discount)}</span>
+            ) : (
+              <>
+                <div className="border-t border-brand-card py-4 space-y-3 mb-6">
+                  <div className="flex justify-between text-brand-muted text-sm">
+                    <span>{t.subtotal}</span>
+                    <span>৳{totalAmount}</span>
+                  </div>
+                  {discount > 0 && (
+                    <div className="flex justify-between text-brand-neon text-sm font-mono">
+                      <span>{t.studentDiscount}</span>
+                      <span>-৳{Math.round(totalAmount * discount)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-brand-muted text-sm">
+                    <span>{t.delivery} {isCampus ? "(Campus Free)" : "(Inside BD)"}</span>
+                    <span>{isCampus ? <span className="text-brand-neon uppercase text-[10px] font-bold">Free</span> : `৳${shippingCharge}`}</span>
+                  </div>
                 </div>
-              )}
-              <div className="flex justify-between text-brand-muted text-sm">
-                <span>{t.delivery} {isCampus ? "(Campus Free)" : "(Inside BD)"}</span>
-                <span>{isCampus ? <span className="text-brand-neon uppercase text-[10px] font-bold">Free</span> : `৳${shippingCharge}`}</span>
-              </div>
-            </div>
 
-            <div className="flex justify-between text-white font-bold text-xl mb-8 border-t border-brand-card pt-4">
-              <span>{t.total}</span>
-              <span className="text-brand-neon">৳{finalTotal}</span>
-            </div>
+                <div className="flex justify-between text-white font-bold text-xl mb-8 border-t border-brand-card pt-4">
+                  <span>{t.total}</span>
+                  <span className="text-brand-neon">৳{finalTotal}</span>
+                </div>
+              </>
+            )}
 
             <button 
               type="submit" 
               form="checkout-form"
-              disabled={isSubmitting || items.length === 0}
+              disabled={!mounted || isSubmitting || items.length === 0}
               className="w-full bg-brand-neon text-brand-bg font-bold py-4 rounded-lg hover:bg-[#4ddbb6] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
