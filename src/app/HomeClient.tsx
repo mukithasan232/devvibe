@@ -272,8 +272,8 @@ export default function HomeClient() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-10">
+      {/* Testimonials / About */}
+      <section id="about" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-10">
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <div className="md:w-1/3">
             <h2 className="text-3xl font-bold text-white mb-4">Trusted by 500+ Developers</h2>

@@ -99,13 +99,13 @@ export default function RootLayout({
               </div>
               <nav className="hidden md:flex gap-8">
                 {["Collections", "Tech Specs", "About"].map((item) => (
-                  <a
+                  <Link
                     key={item}
-                    href={`#${item.toLowerCase().replace(" ", "-")}`}
-                    className="text-brand-text hover:text-brand-neon text-sm font-medium transition-colors"
+                    href={`/#${item.toLowerCase().replace(" ", "-")}`}
+                    className="text-brand-text hover:text-brand-neon text-sm font-medium transition-colors cursor-pointer"
                   >
                     {item}
-                  </a>
+                  </Link>
                 ))}
               </nav>
               <div className="flex items-center gap-4">
@@ -158,10 +158,9 @@ export default function RootLayout({
                 <h4 className="text-white font-semibold mb-4">Quick Links</h4>
                 <ul className="space-y-2 text-sm text-brand-muted">
                   <li><Link href="/" className="hover:text-brand-neon transition-colors">Shop</Link></li>
-                  <li><Link href="/admin/orders" className="hover:text-brand-neon transition-colors">Track Order</Link></li>
+                  <li><Link href="/profile" className="hover:text-brand-neon transition-colors">Track Order</Link></li>
                   <li><Link href="/admin/login" className="hover:text-brand-neon transition-colors opacity-50 hover:opacity-100">Admin Portal</Link></li>
-                  <li><Link href="/" className="hover:text-brand-neon transition-colors">Return Policy</Link></li>
-                  <li><Link href="/" className="hover:text-brand-neon transition-colors">Contact Us</Link></li>
+                  <li><Link href="https://wa.me/8801XXXXXXXXX" target="_blank" className="hover:text-brand-neon transition-colors">Contact Us</Link></li>
                 </ul>
               </div>
               <div>
