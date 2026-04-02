@@ -8,7 +8,8 @@ import { LanguageProvider } from "@/components/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
 import Link from "next/link";
 import PageTransition from "@/components/PageTransition";
-import { Analytics } from "@vercel/analytics/next";;
+import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 
 // Optimize Google Font with Inter for tech-aesthetic
 const inter = Inter({
@@ -79,6 +80,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} antialiased scroll-smooth`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-GPDKJEHLL2"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-GPDKJEHLL2');
+          `}
+        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
