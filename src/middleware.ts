@@ -4,8 +4,8 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Protect /admin and /api/admin routes
-  if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
+  // Protect /admin and /api/admin routes, but allow /admin/login
+  if ((pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) && !pathname.startsWith('/admin/login')) {
     const adminSecret = process.env.ADMIN_SECRET;
     
     // If no secret is configured, we allow access for setup, 
