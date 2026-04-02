@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/components/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
 import Link from "next/link";
 import PageTransition from "@/components/PageTransition";
+import { Analytics } from "@vercel/analytics/next";;
 
 // Optimize Google Font with Inter for tech-aesthetic
 const inter = Inter({
@@ -185,6 +186,7 @@ export default function RootLayout({
           </div>
         </footer>
           </Providers>
+          <Analytics />
         </LanguageProvider>
       </body>
     </html>
