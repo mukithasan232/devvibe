@@ -271,11 +271,44 @@ export default function HomeClient() {
         </div>
       </section>
 
-      {/* Testimonials / About */}
-      <section id="about" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-10">
+      {/* About DevVibe */}
+      <section id="about" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-20">
+        <div className="flex flex-col md:flex-row gap-12 items-center mb-24">
+          <div className="md:w-1/2">
+             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-card border border-brand-paper mb-6 text-sm text-brand-neon">
+                About The Brand
+             </div>
+             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Compiled for Comfort.</h2>
+             <p className="text-brand-muted mb-4 text-base leading-relaxed">
+               Founded by <span className="text-white font-medium">MD Mukit Hasan</span>, DevVibe was created to solve a simple bug in the clothing industry: developers needed apparel that matched their digital aesthetic while delivering unmatched physical comfort during long coding sprints.
+             </p>
+             <p className="text-brand-muted mb-8 text-base leading-relaxed">
+               We source premium 100% organic bio-washed cotton in Bangladesh, engineering our T-shirts like software—with strict quality control, clean minimalism, and zero compromises. Whether it's a solid essential or an artistic graphic drop, we build hardware for your body.
+             </p>
+             <div className="grid grid-cols-2 gap-6">
+                <div className="border-l-2 border-brand-neon pl-4">
+                  <div className="text-2xl font-bold text-white mb-1">500+</div>
+                  <div className="text-xs text-brand-muted uppercase tracking-wider">Developers Clothed</div>
+                </div>
+                <div className="border-l-2 border-brand-neon pl-4">
+                  <div className="text-2xl font-bold text-white mb-1">0%</div>
+                  <div className="text-xs text-brand-muted uppercase tracking-wider">Memory Leaks (Shrinks)</div>
+                </div>
+             </div>
+          </div>
+          <div className="md:w-1/2 w-full relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden border border-brand-paper border-opacity-50 group">
+             <div className="absolute inset-0 bg-brand-bg opacity-20 z-10 group-hover:opacity-0 transition-opacity duration-500"></div>
+             <Image src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop" alt="DevVibe Workspace" fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+             <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#0A192F] to-transparent z-20">
+               <div className="font-mono text-brand-neon text-sm">{"<location>"} Dhaka, BD {"</location>"}</div>
+             </div>
+          </div>
+        </div>
+
+        {/* Testimonials */}
         <div className="flex flex-col md:flex-row gap-12 items-center">
           <div className="md:w-1/3">
-            <h2 className="text-3xl font-bold text-white mb-4">Trusted by 500+ Developers</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">Community Feedback</h2>
             <p className="text-brand-muted mb-8 text-sm leading-relaxed">
               Don't just take our word for it. See what the community is pushing to production.
             </p>
