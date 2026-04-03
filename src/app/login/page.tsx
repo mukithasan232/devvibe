@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowRight, Lock, Mail } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function CustomerLogin() {
   const [email, setEmail] = useState("");
@@ -30,6 +31,16 @@ export default function CustomerLogin() {
         className="w-full max-w-md bg-brand-card/30 backdrop-blur-xl border border-brand-paper rounded-2xl p-8 relative z-10 shadow-2xl"
       >
         <div className="text-center mb-8">
+          <div className="relative w-40 h-12 mx-auto mb-6">
+            <Image 
+              src="/images/logo/DevVibe.png" 
+              alt="DevVibe Logo" 
+              fill 
+              className="object-contain"
+              sizes="160px"
+              priority
+            />
+          </div>
           <h1 className="text-3xl font-extrabold text-white mb-2">Welcome Back</h1>
           <p className="text-brand-muted">Authenticate to access your DevVibe workspace.</p>
         </div>

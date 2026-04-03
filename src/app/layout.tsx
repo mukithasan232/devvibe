@@ -10,6 +10,7 @@ import Link from "next/link";
 import PageTransition from "@/components/PageTransition";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
+import Image from "next/image";
 
 // Optimize Google Font with Inter for tech-aesthetic
 const inter = Inter({
@@ -68,7 +69,7 @@ export default function RootLayout({
       "name": "MD Mukit Hasan"
     },
     "url": "https://devvibe.com",
-    "logo": "https://devvibe.com/logo.png",
+    "logo": "https://devvibe.com/images/logo/DevVibe.png",
     "slogan": "Compiled for Comfort",
     "description": "Premium Cotton Tech T-shirts for Developers and Tech Enthusiasts",
     "sameAs": [
@@ -106,9 +107,17 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center gap-2">
-                <Link href="/" className="text-2xl font-bold text-brand-neon hover:text-white transition-colors cursor-pointer tracking-tight">
-                  <span className="text-white">&lt;</span>DevVibe
-                  <span className="text-white">/&gt;</span>
+                <Link href="/" className="flex items-center gap-2 group transition-all duration-300">
+                  <div className="relative w-32 h-10 overflow-hidden transform group-hover:scale-105 transition-transform duration-300">
+                    <Image
+                      src="/images/logo/DevVibe.png"
+                      alt="DevVibe Logo"
+                      fill
+                      className="object-contain"
+                      sizes="128px"
+                      priority
+                    />
+                  </div>
                 </Link>
               </div>
               <nav className="hidden md:flex gap-8">
@@ -148,7 +157,15 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 relative overflow-hidden">
               <div className="col-span-1 md:col-span-2 space-y-4">
-                <div className="text-2xl font-bold text-white">DevVibe</div>
+                <div className="relative w-32 h-10 mb-4 opacity-80 hover:opacity-100 transition-opacity">
+                  <Image
+                    src="/images/logo/DevVibe.png"
+                    alt="DevVibe Logo"
+                    fill
+                    className="object-contain"
+                    sizes="128px"
+                  />
+                </div>
                 <p className="text-brand-muted max-w-sm text-sm">
                   Compiled for Comfort. <br />
                   Founded by <span className="text-white font-medium">MD Mukit Hasan</span>.

@@ -78,7 +78,16 @@ export default function HomeClient() {
             className="text-5xl md:text-7xl font-extrabold tracking-tight text-white mb-6"
           >
             <span className="block text-brand-neon mb-2">{t.heroSubtitle}</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-brand-muted">DevVibe.</span>
+            <div className="relative w-48 h-20 mx-auto md:w-64 md:h-24">
+              <Image
+                src="/images/logo/DevVibe.png"
+                alt="DevVibe Logo"
+                fill
+                className="object-contain"
+                sizes="(max-width: 768px) 100vw, 256px"
+                priority
+              />
+            </div>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -166,10 +175,10 @@ export default function HomeClient() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { id: "1", name: "Midnight Black Solid", price: 450, category: "Solid", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/minimalist_coding_tshirt_1_1775163939367.png" },
-            { id: "2", name: "Neon Synthetic Core", price: 550, category: "Graphics", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/minimalist_coding_tshirt_2_1775163955666.png" },
-            { id: "3", name: "Binary Echo Graphic", price: 550, category: "Graphics", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/minimalist_coding_tshirt_3_1775163974471.png" },
-            { id: "4", name: "Premium Comfort Drop", price: 650, category: "Drop Shoulder", gsm: "220 GSM", isPreOrder: true, releaseDate: "2026-04-10", imageUrl: "/images/solid_color_tshirt_1_1775163992685.png" },
+            { id: "1", name: "DevVibe Signature Solid", price: 450, category: "Solid", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/solid/1.png" },
+            { id: "2", name: "Neon Synthetic Core", price: 550, category: "Graphics", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/graphics/1.png" },
+            { id: "3", name: "Binary Echo Graphic", price: 550, category: "Graphics", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/graphics/2.png" },
+            { id: "4", name: "Premium Comfort Drop", price: 650, category: "Drop Shoulder", gsm: "220 GSM", isPreOrder: true, releaseDate: "2026-04-10", imageUrl: "/images/solid/3.png" },
           ].map((product, idx) => (
             <motion.div 
               key={product.id} 
@@ -298,7 +307,13 @@ export default function HomeClient() {
           </div>
           <div className="md:w-1/2 w-full relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden border border-brand-paper border-opacity-50 group">
              <div className="absolute inset-0 bg-brand-bg opacity-20 z-10 group-hover:opacity-0 transition-opacity duration-500"></div>
-             <Image src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop" alt="DevVibe Workspace" fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+             <Image 
+               src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800&auto=format&fit=crop" 
+               alt="DevVibe Workspace" 
+               fill 
+               className="object-cover group-hover:scale-105 transition-transform duration-700" 
+               sizes="(max-width: 768px) 100vw, 50vw"
+             />
              <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-[#0A192F] to-transparent z-20">
                <div className="font-mono text-brand-neon text-sm">{"<location>"} Dhaka, BD {"</location>"}</div>
              </div>

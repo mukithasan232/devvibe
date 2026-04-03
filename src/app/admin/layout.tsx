@@ -3,6 +3,7 @@
 import { Package, ShoppingBag, LayoutDashboard, Lock, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -25,8 +26,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="flex h-screen bg-brand-bg text-brand-text">
       <aside className="w-64 bg-brand-paper border-r border-brand-card flex flex-col pt-6 shrink-0 z-50">
         <div className="px-6 mb-10">
-          <Link href="/admin" className="text-xl font-bold text-white tracking-tight flex items-center justify-center gap-2">
-            <span className="text-brand-neon">&lt;</span>Admin<span className="text-brand-neon">/&gt;</span>
+          <Link href="/admin" className="relative w-full h-12 block group">
+            <Image
+              src="/images/logo/DevVibe.png"
+              alt="DevVibe Admin"
+              fill
+              className="object-contain transform group-hover:scale-105 transition-transform duration-300"
+              sizes="256px"
+            />
           </Link>
         </div>
         <nav className="flex-1 px-4 space-y-2">

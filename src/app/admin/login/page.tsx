@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ShieldAlert, ArrowRight, Lock, Terminal } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function AdminLoginPage() {
   const [secret, setSecret] = useState("");
@@ -47,6 +48,16 @@ export default function AdminLoginPage() {
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-neon to-transparent" />
           
           <div className="flex flex-col items-center mb-8">
+            <div className="relative w-40 h-12 mb-6">
+              <Image 
+                src="/images/logo/DevVibe.png" 
+                alt="DevVibe Logo" 
+                fill 
+                className="object-contain"
+                sizes="160px"
+                priority
+              />
+            </div>
             <div className="w-16 h-16 bg-brand-bg rounded-xl border border-brand-paper flex items-center justify-center text-brand-neon mb-4 shadow-[0_0_15px_rgba(57,255,20,0.2)]">
               <ShieldAlert size={32} />
             </div>
