@@ -8,6 +8,7 @@ import { useLanguage } from "@/components/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Image from "next/image";
+import TrustBar from "@/components/TrustBar";
 
 export default function HomeClient() {
   const { addToCart } = useCart();
@@ -57,17 +58,7 @@ export default function HomeClient() {
       />
 
       {/* Above-the-Fold Trust Banner */}
-      <div className="bg-brand-neon text-brand-bg py-2 w-full overflow-hidden whitespace-nowrap border-b border-brand-neon/20">
-        <div className="flex animate-marquee gap-10 items-center whitespace-nowrap">
-          {[...Array(5)].map((_, i) => (
-            <span key={i} className="text-[10px] font-bold uppercase tracking-[0.2em] flex items-center gap-2">
-              <Star size={10} fill="currentColor" /> Free Delivery in Bangladesh 
-              <ShieldCheck size={10} /> Premium 220 GSM Bio-Washed Cotton
-              <Leaf size={10} /> 100% Organic Verified Source
-            </span>
-          ))}
-        </div>
-      </div>
+      <TrustBar />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-32">
@@ -126,14 +117,14 @@ export default function HomeClient() {
         <h2 className="text-3xl font-bold text-white mb-10 flex items-center gap-3">
           <span className="text-brand-neon">{"//"}</span> Featured Collections
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Collection 1 */}
           <div className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer border border-brand-paper hover:border-brand-neon transition-colors">
             <div className="absolute inset-0 bg-gradient-to-br from-brand-bg to-brand-card opacity-90 transition-opacity group-hover:opacity-75 z-10" />
             <div className="absolute inset-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay" />
             <div className="relative z-20 h-full flex flex-col justify-end p-8">
-              <p className="text-brand-neon font-mono text-sm mb-2">01 — classic</p>
-              <h3 className="text-3xl font-bold text-white mb-4">Round Neck</h3>
+              <p className="text-brand-neon font-mono text-sm mb-2">01 — premium</p>
+              <h3 className="text-3xl font-bold text-white mb-4">Solid</h3>
               <span className="inline-flex items-center text-sm font-medium text-white group-hover:text-brand-neon transition-colors">
                 Explore Collection <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </span>
@@ -141,10 +132,22 @@ export default function HomeClient() {
           </div>
           {/* Collection 2 */}
           <div className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer border border-brand-paper hover:border-brand-neon transition-colors">
+            <div className="absolute inset-0 bg-gradient-to-tl from-brand-bg to-brand-card opacity-90 transition-opacity group-hover:opacity-75 z-10" />
+            <div className="absolute inset-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay" />
+            <div className="relative z-20 h-full flex flex-col justify-end p-8">
+              <p className="text-brand-neon font-mono text-sm mb-2">02 — artistic</p>
+              <h3 className="text-3xl font-bold text-white mb-4">Graphics</h3>
+              <span className="inline-flex items-center text-sm font-medium text-white group-hover:text-brand-neon transition-colors">
+                Explore Collection <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </span>
+            </div>
+          </div>
+          {/* Collection 3 */}
+          <div className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer border border-brand-paper hover:border-brand-neon transition-colors">
             <div className="absolute inset-0 bg-gradient-to-bl from-brand-bg to-brand-card opacity-90 transition-opacity group-hover:opacity-75 z-10" />
             <div className="absolute inset-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=800&auto=format&fit=crop')] bg-cover bg-center mix-blend-overlay" />
             <div className="relative z-20 h-full flex flex-col justify-end p-8">
-              <p className="text-brand-neon font-mono text-sm mb-2">02 — relaxed</p>
+              <p className="text-brand-neon font-mono text-sm mb-2">03 — relaxed</p>
               <h3 className="text-3xl font-bold text-white mb-4">Drop Shoulder</h3>
               <span className="inline-flex items-center text-sm font-medium text-white group-hover:text-brand-neon transition-colors">
                 Explore Collection <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
@@ -163,10 +166,10 @@ export default function HomeClient() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { id: "1", name: "Modern Minimalist (Round)", price: 450, category: "Round Neck", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/minimalist_coding_tshirt_1_1775163939367.png" },
-            { id: "2", name: "Source Code Black (Round)", price: 450, category: "Round Neck", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/minimalist_coding_tshirt_2_1775163955666.png" },
-            { id: "3", name: "DevVibe Signature (Round)", price: 450, category: "Round Neck", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/minimalist_coding_tshirt_3_1775163974471.png" },
-            { id: "4", name: "Premium Comfort (Drop)", price: 650, category: "Drop Shoulder", gsm: "220 GSM", isPreOrder: true, releaseDate: "2026-04-10", imageUrl: "/images/solid_color_tshirt_1_1775163992685.png" },
+            { id: "1", name: "Midnight Black Solid", price: 450, category: "Solid", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/minimalist_coding_tshirt_1_1775163939367.png" },
+            { id: "2", name: "Neon Synthetic Core", price: 550, category: "Graphics", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/minimalist_coding_tshirt_2_1775163955666.png" },
+            { id: "3", name: "Binary Echo Graphic", price: 550, category: "Graphics", gsm: "180 GSM", isPreOrder: false, imageUrl: "/images/minimalist_coding_tshirt_3_1775163974471.png" },
+            { id: "4", name: "Premium Comfort Drop", price: 650, category: "Drop Shoulder", gsm: "220 GSM", isPreOrder: true, releaseDate: "2026-04-10", imageUrl: "/images/solid_color_tshirt_1_1775163992685.png" },
           ].map((product, idx) => (
             <motion.div 
               key={product.id} 

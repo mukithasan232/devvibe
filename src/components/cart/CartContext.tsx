@@ -9,7 +9,7 @@ type CartItem = {
   price: number;
   size: string;
   quantity: number;
-  category?: string; // e.g., "Round Neck"
+  category?: string; // e.g., "Solid"
   imageUrl?: string;
 };
 
@@ -70,13 +70,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const clearCart = () => setItems([]);
 
-  // Dynamic Automated Pricing Logic: 2 Round Neck for 800 BDT (100 BDT discount per pair)
+  // Dynamic Automated Pricing Logic: 2 Solid/Graphics for 800 BDT (100 BDT discount per pair)
   const totalAmount = (() => {
     const rawTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const roundNeckCount = items
-      .filter(item => item.category === "Round Neck")
+    const applicableTeesCount = items
+      .filter(item => item.category === "Solid" || item.category === "Graphics")
       .reduce((sum, item) => sum + item.quantity, 0);
-    const comboDiscount = Math.floor(roundNeckCount / 2) * 100;
+    const comboDiscount = Math.floor(applicableTeesCount / 2) * 100;
     return rawTotal - comboDiscount;
   })();
 

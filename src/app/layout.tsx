@@ -127,7 +127,7 @@ export default function RootLayout({
                   <Link href="/admin/login" className="p-2 text-brand-muted hover:text-brand-neon transition-colors" title="Admin Control">
                     <Lock size={18} />
                   </Link>
-                  <Link href="/profile" className="p-2 text-brand-text hover:text-brand-neon transition-colors" aria-label="Customer Profile">
+                  <Link href="/login" className="p-2 text-brand-text hover:text-brand-neon transition-colors" aria-label="Customer Login">
                     <User size={20} />
                   </Link>
                   <CartHeaderIcon />

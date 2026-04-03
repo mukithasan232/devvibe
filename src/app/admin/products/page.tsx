@@ -5,6 +5,7 @@
 import { useEffect, useState } from "react";
 import SmartProductCard from "@/components/admin/SmartProductCard";
 import { Star, X } from "lucide-react";
+import ImageUploadDropzone from "@/components/admin/ImageUploadDropzone";
 
 interface ProductShape {
   id: string;
@@ -30,8 +31,8 @@ export default function AdminProducts() {
     name: "",
     description: "",
     price: "",
-    imageUrl: "",
-    category: "Round Neck",
+    imageUrls: [] as string[],
+    category: "Solid",
     stockM: "0",
     stockL: "0",
     stockXL: "0",
@@ -63,7 +64,7 @@ export default function AdminProducts() {
         name: product.name,
         description: product.description ?? "",
         price: product.price.toString(),
-        imageUrl: product.imageUrl,
+        imageUrls: product.imageUrl ? product.imageUrl.split(",") : [],
         category: product.category,
         stockM: product.stockM.toString(),
         stockL: product.stockL.toString(),
@@ -76,8 +77,8 @@ export default function AdminProducts() {
         name: "",
         description: "",
         price: "",
-        imageUrl: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop",
-        category: "Round Neck",
+        imageUrls: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop"],
+        category: "Solid",
         stockM: "0",
         stockL: "0",
         stockXL: "0",
@@ -95,7 +96,7 @@ export default function AdminProducts() {
       name: formData.name,
       description: formData.description,
       price: Number(formData.price),
-      imageUrl: formData.imageUrl,
+      imageUrl: formData.imageUrls.join(","),
       category: formData.category,
       stockM: Number(formData.stockM),
       stockL: Number(formData.stockL),
@@ -167,7 +168,7 @@ export default function AdminProducts() {
                 id: p.id,
                 name: p.name,
                 price: p.price,
-                imageUrl: p.imageUrl || "https://devvibe.com/default-product.jpg",
+                imageUrl: p.imageUrl ? p.imageUrl.split(',')[0] : "https://devvibe.com/default-product.jpg",
                 category: p.category,
                 sizes: [
                   { size: "M", stock: p.stockM },
@@ -214,8 +215,15 @@ export default function AdminProducts() {
               <label className="text-sm text-brand-muted block">Price</label>
               <input value={formData.price} required type="number" onChange={(e) => setFormData({ ...formData, price: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white focus:border-brand-neon" />
 
-              <label className="text-sm text-brand-muted block">Image URL</label>
-              <input value={formData.imageUrl} required type="url" onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white focus:border-brand-neon" />
+              <label className="text-sm text-brand-muted block">Category</label>
+              <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white focus:border-brand-neon appearance-none">
+                <option value="Solid">Solid</option>
+                <option value="Graphics">Graphics</option>
+                <option value="Drop Shoulder">Drop Shoulder</option>
+              </select>
+
+              <label className="text-sm text-brand-muted block">Product Images</label>
+              <ImageUploadDropzone value={formData.imageUrls} onChange={(urls) => setFormData({ ...formData, imageUrls: urls })} />
 
               <label className="text-sm text-brand-muted block">Stock (M/L/XL/XXL)</label>
               <div className="grid grid-cols-2 gap-2">
