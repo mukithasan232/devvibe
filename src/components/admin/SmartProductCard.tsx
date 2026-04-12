@@ -16,12 +16,13 @@ interface ProductProps {
   price: number;
   imageUrl: string;
   category: string;
+  isLimited?: boolean;
   sizes: ProductSize[];
 }
 
 export default function SmartProductCard({ product }: { product: ProductProps }) {
   const [isHovered, setIsHovered] = useState(false);
-
+  
   // Auto-calculate if any size is below stock threshold
   const lowStockSizes = product.sizes.filter((s) => s.stock < 5);
   const isLowStock = lowStockSizes.length > 0;
@@ -36,6 +37,13 @@ export default function SmartProductCard({ product }: { product: ProductProps })
       onMouseLeave={() => setIsHovered(false)}
       className="relative bg-brand-paper border border-brand-card rounded-xl overflow-hidden shadow-lg group"
     >
+      {/* Limited Edition Badge */}
+      {product.isLimited && (
+        <div className="absolute top-3 left-3 z-10 bg-orange-500 text-brand-bg text-[10px] font-black px-2 py-1 rounded-md shadow-lg uppercase tracking-tighter italic">
+          Limited Edition
+        </div>
+      )}
+
       {/* Stock Alert Badge */}
       {isLowStock && (
         <motion.div

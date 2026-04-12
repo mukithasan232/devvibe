@@ -30,6 +30,7 @@ interface ProductShape {
   stockXL: number;
   stockXXL: number;
   isPublished: boolean;
+  isLimitedEdition: boolean;
 }
 
 export default function ShopClient() {
@@ -66,7 +67,11 @@ export default function ShopClient() {
   const filteredProducts = useMemo(() => {
     return products
       .filter(p => p.isPublished)
-      .filter(p => category === "All" || p.category === category)
+      .filter(p => {
+        if (category === "All") return true;
+        if (category === "Limited Edition") return p.isLimitedEdition;
+        return p.category === category;
+      })
       .filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
       .sort((a, b) => {
         if (sortBy === "price-low") return a.price - b.price;
@@ -194,6 +199,7 @@ export default function ShopClient() {
                             price={p.price}
                             imageUrl={p.imageUrl?.split(",")[0] || "/placeholder.jpg"}
                             category={p.category}
+                            isLimited={p.isLimitedEdition}
                             sizes={[
                                 { size: "M", stock: p.stockM },
                                 { size: "L", stock: p.stockL },

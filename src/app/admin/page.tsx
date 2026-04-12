@@ -12,7 +12,8 @@ import {
   BarChart3,
   Calendar,
   Activity,
-  Layers
+  Layers,
+  Star
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -26,6 +27,8 @@ interface DashboardStats {
     pendingOrders: number;
     aov: number;
     totalInventoryValue: number;
+    totalProducts: number;
+    limitedEditionCount: number;
   };
   topProducts: Array<{
     name: string;
@@ -82,7 +85,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Financial Matrix */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         <StatCard 
           title="Gross Revenue" 
           value={`৳${stats?.summary.totalRevenue.toLocaleString()}`} 
@@ -99,18 +102,25 @@ export default function AdminDashboard() {
           isTrendPositive={Number(stats?.summary.profitMargin) > 0}
         />
         <StatCard 
-          title="AOV (Avg Order)" 
+          title="Avg Order (AOV)" 
           value={`৳${stats?.summary.aov.toLocaleString()}`} 
           icon={Target} 
           color="text-yellow-400" 
-          trend="Fulfillment Efficiency"
+          trend="Yield/Order"
         />
         <StatCard 
-          title="Active Orders" 
-          value={stats?.summary.totalOrders.toString() || "0"} 
-          icon={ShoppingBag} 
-          color="text-brand-neon" 
-          trend={`${stats?.summary.pendingOrders} Processing`}
+          title="Total SKUs" 
+          value={stats?.summary.totalProducts.toString() || "0"} 
+          icon={Layers} 
+          color="text-white" 
+          trend="Active Catalog"
+        />
+        <StatCard 
+          title="Limited Drops" 
+          value={stats?.summary.limitedEditionCount.toString() || "0"} 
+          icon={Star} 
+          color="text-orange-500" 
+          trend="Exclusive Releases"
         />
       </div>
 

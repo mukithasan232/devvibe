@@ -25,6 +25,7 @@ model Product {
   stockXXL    Int      @default(0)
   
   isPublished Boolean  @default(true)
+  isLimitedEdition Boolean @default(false)
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

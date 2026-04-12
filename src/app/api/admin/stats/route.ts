@@ -71,7 +71,9 @@ export async function GET() {
         totalOrders,
         pendingOrders,
         aov: Math.round(aov),
-        totalInventoryValue: products.reduce((sum, p) => sum + (p.costPrice * (p.stockM + p.stockL + p.stockXL + p.stockXXL)), 0)
+        totalInventoryValue: products.reduce((sum, p) => sum + (p.costPrice * (p.stockM + p.stockL + p.stockXL + p.stockXXL)), 0),
+        totalProducts: products.length,
+        limitedEditionCount: products.filter(p => p.isLimitedEdition).length,
       },
       topProducts,
       recentPerformance,

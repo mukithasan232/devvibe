@@ -12,10 +12,11 @@ interface ProductCardProps {
   price: number;
   imageUrl: string;
   category: string;
+  isLimited?: boolean;
   sizes: { size: string; stock: number }[];
 }
 
-export default function ProductCard({ id, name, price, imageUrl, category, sizes }: ProductCardProps) {
+export default function ProductCard({ id, name, price, imageUrl, category, sizes, isLimited }: ProductCardProps) {
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
 
@@ -43,6 +44,12 @@ export default function ProductCard({ id, name, price, imageUrl, category, sizes
           className="object-cover group-hover:scale-105 transition-transform duration-700"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
         />
+        
+        {isLimited && (
+          <div className="absolute top-6 left-6 z-10 bg-orange-500 text-brand-bg text-[10px] font-black px-3 py-1.5 rounded-xl shadow-2xl uppercase tracking-widest italic">
+            Limited
+          </div>
+        )}
         
         <div className="absolute inset-0 bg-brand-bg/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
           <button
