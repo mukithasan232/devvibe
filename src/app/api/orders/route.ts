@@ -23,7 +23,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { customerName, customerPhone, customerAddress, items, paymentMethod, trxId } = body;
+    const { customerName, customerPhone, customerEmail, customerAddress, items, paymentMethod, trxId } = body;
 
     if (!customerName || !customerPhone || !customerAddress || !items || items.length === 0) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     }
 
     let totalAmount = 0;
-    const itemEntries = (items as Array<{ productId: string; size: string; quantity: number; price: number }>).map((item) => {
+    const itemEntries = (items as Array<{ productId: string; size: string; quantity: number; price: number; name: string }>).map((item) => {
       const price = Number(item.price);
       const quantity = Number(item.quantity);
       totalAmount += price * quantity;
@@ -54,12 +54,13 @@ export async function POST(req: Request) {
         serializedId: serialId,
         customerName,
         customerPhone,
+        customerEmail: customerEmail || null,
         customerAddress,
         totalAmount,
         status: "PENDING",
         paymentMethod,
         trxId: trxId || null,
-        isPaid: false, // Default to false, explicitly approved by admin later or via automated gateways
+        isPaid: false,
         items: {
           create: itemEntries,
         },
@@ -67,6 +68,29 @@ export async function POST(req: Request) {
       include: {
         items: true,
       },
+    });
+
+    // --- TRIGGER NOTIFICATIONS ---
+    import("@/lib/notifications").then(async ({ sendSMS, sendEmail, getEmailTemplate }) => {
+        // Customer SMS
+        sendSMS(customerPhone, `Order Confirmed! Your DevVibe Order #${serialId} has been received. Track here: https://devvibe-mu.vercel.app/track?id=${order.id}`);
+        
+        // Admin SMS
+        if (process.env.ADMIN_NOTIFICATION_PHONE) {
+            sendSMS(process.env.ADMIN_NOTIFICATION_PHONE, `NEW ORDER! #${serialId} by ${customerName} (৳${totalAmount}). View: https://devvibe-mu.vercel.app/admin/orders/${order.id}`);
+        }
+
+        // Customer Email
+        if (customerEmail) {
+            const emailHtml = getEmailTemplate(order, "customer");
+            sendEmail(customerEmail, `Order Confirmed: ${serialId}`, emailHtml);
+        }
+
+        // Admin Email
+        if (process.env.ADMIN_NOTIFICATION_EMAIL) {
+            const adminEmailHtml = getEmailTemplate(order, "admin");
+            sendEmail(process.env.ADMIN_NOTIFICATION_EMAIL, `🚨 NEW ORDER: ${serialId}`, adminEmailHtml);
+        }
     });
 
     return NextResponse.json({ success: true, order }, { status: 201 });

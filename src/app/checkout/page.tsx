@@ -25,6 +25,9 @@ export default function CheckoutPage() {
   // Automation State
   const [promoCode, setPromoCode] = useState("");
   const [isStudent, setIsStudent] = useState(false);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [isCampus, setIsCampus] = useState(false);
 
@@ -46,6 +49,10 @@ export default function CheckoutPage() {
     e.preventDefault();
     if (items.length === 0) return alert("Cart is empty");
 
+    if (!name || !phone || !address || !email) {
+        return alert("Please fill all required shipping fields.");
+    }
+
     if ((paymentMethod === "BKASH_MANUAL" || paymentMethod === "NAGAD_MANUAL") && !trxId.match(/^[A-Z0-9]{6,20}$/)) {
       return alert("Please enter a valid Transaction ID (alphanumeric 6-20 chars).");
     }
@@ -53,9 +60,10 @@ export default function CheckoutPage() {
     setIsSubmitting(true);
 
     const payload = {
-      customerName: (e.currentTarget.querySelector('input[type="text"]') as HTMLInputElement)?.value || "Guest",
-      customerPhone: (e.currentTarget.querySelector('input[type="tel"]') as HTMLInputElement)?.value || "0",
-      customerAddress: (e.currentTarget.querySelector('textarea') as HTMLTextAreaElement)?.value || "",
+      customerName: name,
+      customerPhone: phone,
+      customerEmail: email,
+      customerAddress: address,
       items: items.map((item) => ({
         productId: item.productId,
         size: item.size,
@@ -143,12 +151,16 @@ export default function CheckoutPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-brand-muted">Full Name</label>
-                  <input required type="text" className="w-full bg-brand-bg border border-brand-card rounded-lg px-4 py-3 text-white outline-none focus:border-brand-neon transition-colors" placeholder="Linus Torvalds" />
+                  <input required type="text" value={name} onChange={(e) => setName(e.target.value)} className="w-full bg-brand-bg border border-brand-card rounded-lg px-4 py-3 text-white outline-none focus:border-brand-neon transition-colors" placeholder="Linus Torvalds" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-brand-muted">Phone Number</label>
-                  <input required type="tel" className="w-full bg-brand-bg border border-brand-card rounded-lg px-4 py-3 text-white outline-none focus:border-brand-neon transition-colors" placeholder="01XXXXXXXXX" />
+                  <input required type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full bg-brand-bg border border-brand-card rounded-lg px-4 py-3 text-white outline-none focus:border-brand-neon transition-colors" placeholder="01XXXXXXXXX" />
                 </div>
+              </div>
+              <div className="space-y-2 mb-6">
+                <label className="text-sm font-medium text-brand-muted">Email Address (For Invoice & Marketing)</label>
+                <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-brand-bg border border-brand-card rounded-lg px-4 py-3 text-white outline-none focus:border-brand-neon transition-colors font-mono" placeholder="dev@devvibe.com" />
               </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-brand-muted">Delivery Address Array</label>
