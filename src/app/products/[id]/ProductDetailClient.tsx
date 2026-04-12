@@ -8,7 +8,8 @@ import {
   ArrowLeft, 
   Check,
   Star,
-  Info
+  Info,
+  Layers
 } from "lucide-react";
 import { useCart } from "@/components/cart/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
