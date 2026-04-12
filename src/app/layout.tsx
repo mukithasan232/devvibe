@@ -9,6 +9,7 @@ import LanguageToggle from "@/components/LanguageToggle";
 import Link from "next/link";
 import PageTransition from "@/components/PageTransition";
 import { Analytics } from "@vercel/analytics/next";
+import VisitorTracker from "@/components/analytics/VisitorTracker";
 import Script from "next/script";
 import Image from "next/image";
 
@@ -101,6 +102,7 @@ export default function RootLayout({
       </head>
       <body className="flex flex-col min-h-screen">
         <LanguageProvider>
+          <VisitorTracker />
           <Providers>
           {/* Navigation / Header */}
           <header className="sticky top-0 z-50 w-full bg-brand-bg/80 backdrop-blur-md border-b border-brand-paper">

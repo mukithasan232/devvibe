@@ -128,12 +128,12 @@ export default function HomeClient() {
 
       {/* Category Matrix */}
       <section className="max-w-7xl mx-auto px-4 py-32 sm:px-6 lg:px-8" id="collections">
-        <div className="flex justify-between items-end mb-16">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
           <div>
-            <h2 className="text-4xl font-black text-white tracking-tight uppercase leading-none mb-2">Shop Categories</h2>
-            <p className="text-brand-muted font-medium">Select your preferred fit and style matrix.</p>
+            <h2 className="text-5xl font-black text-white tracking-tighter uppercase leading-none mb-4">Shop Categories</h2>
+            <p className="text-brand-muted font-medium text-lg">Select your preferred fit and style matrix.</p>
           </div>
-          <div className="hidden md:block h-px flex-1 bg-brand-card ml-12 opacity-50"></div>
+          <div className="hidden md:block h-px flex-1 bg-brand-card ml-12 mb-4 opacity-50"></div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -145,19 +145,20 @@ export default function HomeClient() {
             <Link 
               key={cat.name} 
               href="/#shop" 
-              className="group relative h-[500px] rounded-3xl overflow-hidden border border-brand-card hover:border-brand-neon/50 transition-all shadow-2xl"
+              className="group relative aspect-[3/4] md:h-[600px] rounded-[40px] overflow-hidden border border-brand-card hover:border-brand-neon/50 transition-all shadow-2xl bg-brand-paper"
             >
               <Image 
                 src={cat.img} 
                 alt={cat.name} 
                 fill 
-                className="object-contain group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100 p-8"
+                className="object-contain group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100 p-12 md:p-16"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-bg via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 p-8 w-full">
-                <div className="h-1 w-12 bg-brand-neon mb-4 group-hover:w-full transition-all duration-500"></div>
-                <h3 className="text-3xl font-black text-white mb-2">{cat.name}</h3>
-                <p className="text-brand-muted text-sm group-hover:text-white transition-colors uppercase tracking-widest font-bold">{cat.desc}</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-brand-bg via-transparent to-transparent opacity-80" />
+              <div className="absolute bottom-0 left-0 p-10 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="h-1.5 w-12 bg-brand-neon mb-6 group-hover:w-full transition-all duration-700 rounded-full"></div>
+                <h3 className="text-4xl font-black text-white mb-3 tracking-tighter">{cat.name}</h3>
+                <p className="text-brand-neon font-bold text-xs uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-opacity duration-700">{cat.desc}</p>
               </div>
             </Link>
           ))}
@@ -168,10 +169,10 @@ export default function HomeClient() {
       <section id="shop" className="max-w-7xl mx-auto px-4 py-32 sm:px-6 lg:px-8 border-t border-brand-paper">
         <div className="text-center mb-24">
           <p className="text-brand-neon font-black text-xs uppercase tracking-[0.4em] mb-4">Live Drops</p>
-          <h2 className="text-6xl font-black text-white tracking-tighter uppercase mb-4">Latest Arrivals</h2>
+          <h2 className="text-7xl font-black text-white tracking-tighter uppercase mb-6">Latest Arrivals</h2>
           <div className="flex justify-center gap-4">
-            <div className="h-1.5 w-24 bg-brand-neon rounded-full" />
-            <div className="h-1.5 w-8 bg-brand-card rounded-full" />
+            <div className="h-2 w-32 bg-brand-neon rounded-full shadow-[0_0_15px_rgba(57,255,20,0.5)]" />
+            <div className="h-2 w-8 bg-brand-card rounded-full" />
           </div>
         </div>
 
@@ -180,7 +181,7 @@ export default function HomeClient() {
                 {[1,2,3,4].map(i => <div key={i} className="aspect-[4/5] bg-brand-paper rounded-2xl animate-pulse" />)}
             </div>
         ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
             {products.map((p, idx) => (
                 <motion.div 
                     key={p.id}
@@ -190,32 +191,33 @@ export default function HomeClient() {
                     transition={{ delay: idx * 0.1 }}
                     className="group flex flex-col"
                 >
-                    <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-brand-paper border border-brand-card group-hover:border-brand-neon/50 transition-all mb-6">
+                    <div className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-brand-paper border border-brand-card group-hover:border-brand-neon/50 transition-all mb-8 shadow-xl">
                         <Image 
                             src={p.imageUrl?.split(",")[0] || "https://devvibe.com/placeholder.jpg"}
                             alt={p.name}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-700"
+                            sizes="(max-width: 768px) 100vw, 25vw"
                         />
-                        <div className="absolute inset-0 bg-brand-bg/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <div className="absolute inset-0 bg-brand-bg/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                             <button 
                                 onClick={() => handleAddToCart(p)}
-                                className="bg-brand-neon text-brand-bg p-4 rounded-2xl shadow-2xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300"
+                                className="bg-brand-neon text-brand-bg p-5 rounded-2xl shadow-[0_0_30px_rgba(57,255,20,0.4)] transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 hover:scale-110 active:scale-90"
                             >
-                                <ShoppingBag size={24} />
+                                <ShoppingBag size={28} />
                             </button>
                         </div>
                     </div>
-                    <div className="px-2">
-                        <p className="text-brand-neon font-bold text-[10px] uppercase tracking-widest mb-1">{p.category}</p>
-                        <h3 className="text-white font-bold text-lg mb-1 group-hover:text-brand-neon transition-colors truncate">{p.name}</h3>
-                        <p className="text-white/60 font-black">৳{p.price}</p>
+                    <div className="px-4">
+                        <p className="text-brand-neon font-black text-[10px] uppercase tracking-[0.3em] mb-2">{p.category}</p>
+                        <h3 className="text-white font-black text-xl mb-2 group-hover:text-brand-neon transition-colors truncate tracking-tight">{p.name}</h3>
+                        <p className="text-white/80 font-black text-lg">৳{p.price}</p>
                     </div>
                 </motion.div>
             ))}
             </div>
         )}
-      </section>
+      </section>n>
 
       {/* Tech Spec section */}
       <section className="bg-brand-paper/30 py-32 border-y border-brand-card relative">
