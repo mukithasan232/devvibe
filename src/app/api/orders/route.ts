@@ -59,7 +59,7 @@ export async function POST(req: Request) {
         status: "PENDING",
         paymentMethod,
         trxId: trxId || null,
-        isPaid: paymentMethod !== "BKASH_MANUAL" && paymentMethod !== "NAGAD_MANUAL",
+        isPaid: false, // Default to false, explicitly approved by admin later or via automated gateways
         items: {
           create: itemEntries,
         },
