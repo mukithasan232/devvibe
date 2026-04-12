@@ -48,8 +48,11 @@ export async function POST(req: Request) {
 
     const secureUrls = await Promise.all(uploadPromises);
     return NextResponse.json({ urls: secureUrls });
-  } catch (error) {
-    console.error("Upload error:", error);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+  } catch (error: any) {
+    console.error("CRITICAL_UPLOAD_FAILURE:", error);
+    return NextResponse.json({ 
+      error: error.message || "Upload failed",
+      details: error.toString()
+    }, { status: 500 });
   }
 }

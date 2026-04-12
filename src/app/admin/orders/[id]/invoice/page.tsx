@@ -53,7 +53,7 @@ export default function AdminInvoicePage() {
                 src="/images/logo/DevVibe.png" 
                 alt="DevVibe" 
                 fill 
-                className="object-contain object-left filter invert brightness-0" 
+                className="object-contain object-left" 
               />
             </div>
             <p className="text-sm text-slate-500 max-w-xs">

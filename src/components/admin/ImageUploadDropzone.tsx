@@ -41,8 +41,8 @@ export default function ImageUploadDropzone({ value, onChange }: ImageUploadDrop
       if (!res.ok) throw new Error(data.error);
 
       onChange([...value, ...data.urls]);
-    } catch (error) {
-      alert("Failed to upload images");
+    } catch (error: any) {
+      alert(`Upload Error: ${error.message || "Failed to upload images"}`);
       console.error(error);
     } finally {
       setIsUploading(false);
