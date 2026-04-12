@@ -13,12 +13,14 @@ interface OrderItem {
   } | null;
 }
 
-export default async function PublicInvoicePage({ params }: { params: { id: string } }) {
+export default async function PublicInvoicePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+
   const order = await prisma.order.findFirst({
     where: { 
       OR: [
-        { id: params.id },
-        { serializedId: params.id }
+        { id: id },
+        { serializedId: id }
       ]
     },
     include: {

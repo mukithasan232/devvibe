@@ -3,13 +3,14 @@ import prisma from "@/lib/prisma";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const { status } = await req.json();
 
     const order = await prisma.order.update({
-      where: { id: params.id },
+      where: { id: id },
       data: { status },
     });
 

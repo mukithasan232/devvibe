@@ -12,9 +12,11 @@ interface OrderItem {
   } | null;
 }
 
-export default async function AdminInvoicePage({ params }: { params: { id: string } }) {
+export default async function AdminInvoicePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+
   const order = await prisma.order.findUnique({
-    where: { id: params.id },
+    where: { id: id },
     include: {
       items: {
         include: {
@@ -33,7 +35,6 @@ export default async function AdminInvoicePage({ params }: { params: { id: strin
   return (
     <div className="bg-white min-h-screen p-8 text-slate-900 font-sans print:p-0">
       <div className="max-w-4xl mx-auto border border-slate-200 p-12 bg-white shadow-xl print:shadow-none print:border-none">
-        
         <div className="flex justify-between items-start mb-12">
           <div>
             <div className="relative w-48 h-12 mb-4">
@@ -122,9 +123,7 @@ export default async function AdminInvoicePage({ params }: { params: { id: strin
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">Official Company Invoice</p>
             <p className="text-[10px] text-slate-400 italic">This is a system generated invoice. Dhaka, Bangladesh.</p>
         </div>
-
       </div>
-      
       <div className="fixed bottom-8 right-8 print:hidden flex gap-4">
           <button 
             onClick={() => window.print()}
