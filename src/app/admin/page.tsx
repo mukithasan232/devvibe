@@ -28,6 +28,10 @@ interface DashboardStats {
     quantity: number;
     revenue: number;
   }>;
+  recentPerformance: Array<{
+    label: string;
+    revenue: number;
+  }>;
 }
 
 export default function AdminDashboard() {
