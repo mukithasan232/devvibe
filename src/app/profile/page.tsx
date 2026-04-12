@@ -210,9 +210,18 @@ export default function CustomerProfile() {
                   ))}
                 </div>
 
-                <div className="mt-6 pt-6 border-t border-brand-card flex justify-between items-center bg-brand-bg/20 -mx-6 -mb-6 p-6 rounded-b-2xl">
-                   <p className="text-brand-muted font-mono text-[10px] uppercase tracking-widest">Total Amount Paid</p>
-                   <p className="text-white text-xl font-bold tracking-tight">৳{order.amount}</p>
+                <div className="mt-6 pt-6 border-t border-brand-card flex flex-col sm:flex-row justify-between items-start sm:items-center bg-brand-bg/20 -mx-6 -mb-6 p-6 rounded-b-2xl gap-4">
+                   <div>
+                      <p className="text-brand-muted font-mono text-[10px] uppercase tracking-widest mb-1">Total Amount Paid</p>
+                      <p className="text-white text-xl font-bold tracking-tight">৳{order.amount}</p>
+                   </div>
+                   <Link 
+                      href={`/invoice/${order.id}`}
+                      target="_blank"
+                      className="bg-brand-paper hover:bg-brand-neon hover:text-brand-bg border border-brand-card hover:border-brand-neon px-6 py-2.5 rounded-xl text-xs font-black transition-all shadow-xl flex items-center gap-2 text-white"
+                   >
+                      <Edit3 size={14} /> Download Invoice
+                   </Link>
                 </div>
               </motion.div>
             ))}
