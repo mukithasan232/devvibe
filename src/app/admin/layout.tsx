@@ -24,7 +24,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="flex h-screen bg-brand-bg text-brand-text">
-      <aside className="w-64 bg-brand-paper border-r border-brand-card flex flex-col pt-6 shrink-0 z-50">
+      <aside className="w-64 bg-brand-paper border-r border-brand-card flex flex-col pt-6 shrink-0 z-50 print:hidden">
         <div className="px-6 mb-10">
           <Link href="/admin" className="relative w-full h-12 block group">
             <Image

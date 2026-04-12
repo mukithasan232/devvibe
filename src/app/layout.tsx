@@ -105,7 +105,7 @@ export default function RootLayout({
           <VisitorTracker />
           <Providers>
           {/* Navigation / Header */}
-          <header className="sticky top-0 z-50 w-full bg-brand-bg/80 backdrop-blur-md border-b border-brand-paper">
+          <header className="sticky top-0 z-50 w-full bg-brand-bg/80 backdrop-blur-md border-b border-brand-paper print:hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center gap-2">
@@ -159,7 +159,7 @@ export default function RootLayout({
         </main>
 
         {/* Footer section */}
-        <footer className="bg-brand-paper border-t border-brand-card py-12 mt-20">
+        <footer className="bg-brand-paper border-t border-brand-card py-12 mt-20 print:hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 relative overflow-hidden">
               <div className="col-span-1 md:col-span-2 space-y-4">
