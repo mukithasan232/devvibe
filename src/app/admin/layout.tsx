@@ -41,6 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             { name: "Overview", href: "/admin", icon: LayoutDashboard },
             { name: "Products", href: "/admin/products", icon: Package },
             { name: "Orders", href: "/admin/orders", icon: ShoppingBag },
+            { name: "Users", href: "/admin/users", icon: UserIcon },
           ].map((item) => (
             <Link 
               key={item.href} 

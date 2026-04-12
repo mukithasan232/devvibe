@@ -35,22 +35,45 @@ export default function CustomerProfile() {
   };
 
   // Mock orders for visual completeness (in production, fetch these via API based on phone/email)
-  const mockOrders = [
-    {
-      id: "DV-20260402-8492",
-      date: "Apr 02, 2026",
-      amount: 1059,
-      status: "DELIVERED",
-      items: [{ name: "DevVibe Core T-Shirt", size: "M", quantity: 1 }]
-    },
-    {
-      id: "DV-20260403-1193",
-      date: "Apr 03, 2026",
-      amount: 2258,
-      status: "PROCESSING",
-      items: [{ name: "Drop Shoulder Aesthetic", size: "L", quantity: 2 }]
+  const [orders, setOrders] = useState<any[]>([]);
+  const [loadingOrders, setLoadingOrders] = useState(true);
+
+  useEffect(() => {
+    setMounted(true);
+    const saved = localStorage.getItem("devvibe-customer");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setCustomer(parsed);
+      if (parsed.phone) {
+        fetchRealOrders(parsed.phone);
+      } else {
+        setLoadingOrders(false);
+      }
+    } else {
+      setLoadingOrders(false);
     }
-  ];
+  }, []);
+
+  const fetchRealOrders = async (phone: string) => {
+    try {
+      const res = await fetch(`/api/customer/orders?phone=${encodeURIComponent(phone)}`);
+      const data = await res.json();
+      setOrders(data.orders || []);
+    } catch (error) {
+      console.error("Order Fetch Error:", error);
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
+
+  const handleSave = () => {
+    localStorage.setItem("devvibe-customer", JSON.stringify(customer));
+    setIsEditing(false);
+    if (customer.phone) {
+      setLoadingOrders(true);
+      fetchRealOrders(customer.phone);
+    }
+  };
 
   if (!mounted) return null;
 
@@ -165,62 +188,78 @@ export default function CustomerProfile() {
               <span className="text-brand-neon">{"//"}</span> {t.recentCompiles}
             </h2>
             
-            {mockOrders.map((order, index) => (
+            {loadingOrders ? (
+               <div className="py-20 text-center animate-pulse">
+                  <Activity className="mx-auto text-brand-neon mb-4" size={32} />
+                  <p className="text-brand-muted font-mono text-[10px] uppercase tracking-widest text-white italic">Querying Fulfillment Database...</p>
+               </div>
+            ) : orders.length === 0 ? (
+               <div className="py-20 text-center bg-brand-paper/30 rounded-2xl border border-brand-card border-dashed">
+                  <Package className="mx-auto text-brand-muted mb-4 opacity-30" size={48} />
+                  <p className="text-brand-muted font-mono text-xs uppercase italic">No active compiles detected in your history.</p>
+                  <Link href="/shop" className="text-brand-neon hover:text-white text-xs font-bold mt-4 inline-block underline underline-offset-4">INITIATE NEW ORDER</Link>
+               </div>
+            ) : orders.map((order, index) => (
               <motion.div 
                 key={order.id} 
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-brand-paper border border-brand-card rounded-2xl p-6 hover:border-brand-neon/30 transition-all group shadow-xl"
+                className="bg-brand-paper border border-brand-card rounded-3xl p-6 hover:border-brand-neon/30 transition-all group shadow-xl relative overflow-hidden"
               >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-brand-card pb-4 mb-4 gap-4">
+                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                   <Package size={80} />
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-brand-card pb-4 mb-4 gap-4 relative z-10">
                   <div>
-                    <p className="text-brand-neon font-mono text-sm tracking-widest">{order.id}</p>
-                    <p className="text-[10px] text-brand-muted mt-1 uppercase font-mono tracking-tighter">{order.date}</p>
+                    <p className="text-brand-neon font-black font-mono text-sm tracking-[0.2em]">{order.serializedId}</p>
+                    <p className="text-[10px] text-brand-muted mt-1 uppercase font-black tracking-widest">{new Date(order.createdAt).toLocaleDateString()} • {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                   </div>
                   <div className="flex items-center gap-2">
                      {order.status === "DELIVERED" ? (
-                       <span className="bg-brand-neon/10 text-brand-neon px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1.5 border border-brand-neon/20 uppercase tracking-wider">
-                         <CheckCircle2 size={12} /> Delivered
+                       <span className="bg-brand-neon/10 text-brand-neon px-4 py-1.5 rounded-full text-[10px] font-black flex items-center gap-1.5 border border-brand-neon/30 uppercase tracking-widest shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                         <CheckCircle2 size={12} /> {order.status}
                        </span>
                      ) : (
-                       <span className="bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1.5 border border-yellow-500/20 uppercase tracking-wider">
-                         <Truck size={12} /> Processing
+                       <span className="bg-brand-bg text-brand-text px-4 py-1.5 rounded-full text-[10px] font-black flex items-center gap-1.5 border border-brand-card uppercase tracking-widest italic">
+                         <Truck size={12} className="text-brand-neon animate-pulse" /> {order.status}
                        </span>
                      )}
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  {order.items.map((item, idx) => (
+                <div className="space-y-4 relative z-10">
+                  {order.items.map((item: any, idx: number) => (
                     <div key={idx} className="flex justify-between items-center text-sm">
                       <div className="flex items-center gap-4 text-white">
-                        <div className="w-10 h-10 rounded-lg bg-brand-bg flex items-center justify-center font-mono text-xs border border-brand-card text-brand-neon">
+                        <div className="w-12 h-12 rounded-xl bg-brand-bg flex items-center justify-center font-black text-xs border border-brand-card text-brand-neon shadow-inner">
                           {item.quantity}x
                         </div>
                         <div className="flex flex-col">
-                           <span className="font-medium">{item.name}</span>
-                           <span className="text-[10px] text-brand-muted font-mono tracking-wider bg-brand-bg w-fit px-1.5 rounded border border-brand-card mt-1">
+                           <span className="font-bold uppercase tracking-tight">{item.product?.name || "Premium DevVibe Item"}</span>
+                           <span className="text-[9px] font-black text-brand-muted font-mono tracking-widest bg-brand-bg w-fit px-2 py-0.5 rounded border border-brand-card mt-1.5">
                              SIZE: {item.size}
                            </span>
                         </div>
                       </div>
-                      <span className="text-white font-mono text-xs">EXE_DONE</span>
+                      <div className="text-right">
+                         <span className="text-brand-neon font-black text-[10px] font-mono tracking-tighter">SUCCESS_FETCH</span>
+                      </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-6 pt-6 border-t border-brand-card flex flex-col sm:flex-row justify-between items-start sm:items-center bg-brand-bg/20 -mx-6 -mb-6 p-6 rounded-b-2xl gap-4">
+                <div className="mt-8 pt-8 border-t border-brand-card flex flex-col sm:flex-row justify-between items-start sm:items-center bg-brand-bg/40 -mx-6 -mb-6 p-8 rounded-b-3xl gap-6 relative z-10">
                    <div>
-                      <p className="text-brand-muted font-mono text-[10px] uppercase tracking-widest mb-1">Total Amount Paid</p>
-                      <p className="text-white text-xl font-bold tracking-tight">৳{order.amount}</p>
+                      <p className="text-brand-muted font-black font-mono text-[9px] uppercase tracking-[0.3em] mb-2">Authenticated Total</p>
+                      <p className="text-white text-2xl font-black tracking-tighter italic">৳{order.totalAmount.toLocaleString()}</p>
                    </div>
                    <Link 
-                      href={`/invoice/${order.id}`}
+                      href={`/invoice/${order.serializedId}`}
                       target="_blank"
-                      className="bg-brand-paper hover:bg-brand-neon hover:text-brand-bg border border-brand-card hover:border-brand-neon px-6 py-2.5 rounded-xl text-xs font-black transition-all shadow-xl flex items-center gap-2 text-white"
+                      className="w-full sm:w-auto bg-brand-paper hover:bg-brand-neon hover:text-brand-bg border border-brand-card hover:border-brand-neon px-8 py-3.5 rounded-xl text-[10px] font-black transition-all shadow-2xl flex items-center justify-center gap-3 text-white uppercase tracking-widest group/btn"
                    >
-                      <Edit3 size={14} /> Download Invoice
+                      <Activity size={14} className="group-hover/btn:animate-spin" /> Download Official Invoice
                    </Link>
                 </div>
               </motion.div>

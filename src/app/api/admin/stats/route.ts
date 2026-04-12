@@ -14,11 +14,13 @@ export async function GET() {
       }
     });
 
+    const products = await prisma.product.findMany();
+
     // 2. Financial Aggregation
     let totalRevenue = 0;
     let totalCost = 0;
-    let totalOrders = orders.length;
-    let pendingOrders = 0;
+    let totalOrders = orders.filter(o => o.status !== 'CANCELLED').length;
+    let pendingOrders = orders.filter(o => o.status === 'PENDING').length;
     let productSales: Record<string, { name: string, quantity: number, revenue: number }> = {};
 
     orders.forEach(order => {
@@ -34,23 +36,21 @@ export async function GET() {
           productSales[item.productId].quantity += item.quantity;
           productSales[item.productId].revenue += item.price * item.quantity;
         });
-
-        if (order.status === 'PENDING') pendingOrders++;
       }
     });
 
     const netProfit = totalRevenue - totalCost;
     const profitMargin = totalRevenue > 0 ? (netProfit / totalRevenue) * 100 : 0;
+    const aov = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
-    // 3. Last 7 Days Performance
+    // 3. Last 7 Days Performance (Improved Logic)
     const recentPerformance = Array.from({ length: 7 }).map((_, i) => {
       const date = new Date();
       date.setDate(date.getDate() - (6 - i));
       const dateStr = date.toISOString().slice(0, 10);
       
-      const dayRevenue = orders
-        .filter(o => o.createdAt.toISOString().slice(0, 10) === dateStr && o.status !== 'CANCELLED')
-        .reduce((sum, o) => sum + o.totalAmount, 0);
+      const dayOrders = orders.filter(o => o.createdAt.toISOString().slice(0, 10) === dateStr && o.status !== 'CANCELLED');
+      const dayRevenue = dayOrders.reduce((sum, o) => sum + o.totalAmount, 0);
 
       const dayLabel = date.toLocaleDateString('en-US', { weekday: 'short' });
 
@@ -67,9 +67,11 @@ export async function GET() {
         totalRevenue,
         totalCost,
         netProfit,
-        profitMargin: profitMargin.toFixed(2),
+        profitMargin: profitMargin.toFixed(1),
         totalOrders,
         pendingOrders,
+        aov: Math.round(aov),
+        totalInventoryValue: products.reduce((sum, p) => sum + (p.costPrice * (p.stockM + p.stockL + p.stockXL + p.stockXXL)), 0)
       },
       topProducts,
       recentPerformance,
