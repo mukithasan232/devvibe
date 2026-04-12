@@ -188,10 +188,10 @@ export default function RootLayout({
               <div>
                 <h4 className="text-white font-semibold mb-4">Quick Links</h4>
                 <ul className="space-y-2 text-sm text-brand-muted">
-                  <li><Link href="/" className="hover:text-brand-neon transition-colors">Shop</Link></li>
-                  <li><Link href="/profile" className="hover:text-brand-neon transition-colors">Track Order</Link></li>
-                  <li><Link href="/admin/login" className="hover:text-brand-neon transition-colors opacity-50 hover:opacity-100">Admin Portal</Link></li>
-                  <li><Link href="https://wa.me/8801XXXXXXXXX" target="_blank" className="hover:text-brand-neon transition-colors">Contact Us</Link></li>
+                  <li><Link href="/#shop" className="hover:text-brand-neon transition-colors">Shop All</Link></li>
+                  <li><Link href="/track" className="hover:text-brand-neon transition-colors font-bold text-white">Track Your Order</Link></li>
+                  <li><Link href="/admin/login" className="hover:text-brand-neon transition-colors opacity-50 hover:opacity-100">Admin Console</Link></li>
+                  <li><Link href="https://wa.me/8801XXXXXXXXX" target="_blank" className="hover:text-brand-neon transition-colors">WhatsApp Support</Link></li>
                 </ul>
               </div>
               <div>
