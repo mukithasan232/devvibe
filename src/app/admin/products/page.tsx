@@ -197,44 +197,109 @@ export default function AdminProducts() {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-brand-bg/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-brand-paper border border-brand-card rounded-2xl w-full max-w-md p-6 relative">
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 text-brand-muted hover:text-white transition-colors"
-            >
-              <X size={20} />
-            </button>
-            <h2 className="text-xl font-bold text-white mb-6">{editingId ? "Edit Product" : "Add Product"}</h2>
-            <form onSubmit={handleSave} className="space-y-3">
-              <label className="text-sm text-brand-muted block">Name</label>
-              <input value={formData.name} required onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white focus:border-brand-neon" />
+          <div className="bg-brand-paper border border-brand-card rounded-3xl w-full max-w-2xl shadow-2xl relative flex flex-col max-h-[90vh]">
+            {/* Header */}
+            <div className="p-6 border-b border-brand-card flex justify-between items-center">
+              <h2 className="text-xl font-bold text-white tracking-tight">{editingId ? "Edit Hardware Instance" : "Initialize New Product"}</h2>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="p-2 bg-brand-bg rounded-full text-brand-muted hover:text-white transition-all hover:rotate-90"
+              >
+                <X size={20} />
+              </button>
+            </div>
 
-              <label className="text-sm text-brand-muted block">Description</label>
-              <textarea value={formData.description} rows={2} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white focus:border-brand-neon" />
+            {/* Scrollable Form Body */}
+            <div className="p-6 overflow-y-auto custom-scrollbar">
+              <form id="product-form" onSubmit={handleSave} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Product Name</label>
+                    <input 
+                      value={formData.name} 
+                      required 
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })} 
+                      className="w-full bg-brand-bg border border-brand-card rounded-xl px-4 py-3 text-white focus:border-brand-neon focus:ring-1 focus:ring-brand-neon/20 transition-all outline-none" 
+                      placeholder="e.g. Modern Syntax Tee"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Price (BDT)</label>
+                    <input 
+                      value={formData.price} 
+                      required 
+                      type="number" 
+                      onChange={(e) => setFormData({ ...formData, price: e.target.value })} 
+                      className="w-full bg-brand-bg border border-brand-card rounded-xl px-4 py-3 text-white focus:border-brand-neon outline-none" 
+                      placeholder="450"
+                    />
+                  </div>
+                </div>
 
-              <label className="text-sm text-brand-muted block">Price</label>
-              <input value={formData.price} required type="number" onChange={(e) => setFormData({ ...formData, price: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white focus:border-brand-neon" />
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Technical Description</label>
+                  <textarea 
+                    value={formData.description} 
+                    rows={3} 
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })} 
+                    className="w-full bg-brand-bg border border-brand-card rounded-xl px-4 py-3 text-white focus:border-brand-neon outline-none resize-none" 
+                    placeholder="Describe material, GSM, and fit characteristics..."
+                  />
+                </div>
 
-              <label className="text-sm text-brand-muted block">Category</label>
-              <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white focus:border-brand-neon appearance-none">
-                <option value="Solid">Solid</option>
-                <option value="Graphics">Graphics</option>
-                <option value="Drop Shoulder">Drop Shoulder</option>
-              </select>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Classification</label>
+                    <select 
+                      value={formData.category} 
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })} 
+                      className="w-full bg-brand-bg border border-brand-card rounded-xl px-4 py-3 text-white focus:border-brand-neon outline-none cursor-pointer"
+                    >
+                      <option value="Solid">Solid (Round Neck)</option>
+                      <option value="Graphics">Graphics Collection</option>
+                      <option value="Drop Shoulder">Relaxed Fit (Drop Shoulder)</option>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Inventory Matrix (Stocks)</label>
+                    <div className="grid grid-cols-4 gap-2">
+                      <div className="space-y-1">
+                        <span className="text-[10px] text-brand-muted block text-center">M</span>
+                        <input value={formData.stockM} required type="number" min={0} onChange={(e) => setFormData({ ...formData, stockM: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-2 py-2 text-white text-center text-xs" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] text-brand-muted block text-center">L</span>
+                        <input value={formData.stockL} required type="number" min={0} onChange={(e) => setFormData({ ...formData, stockL: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-2 py-2 text-white text-center text-xs" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] text-brand-muted block text-center">XL</span>
+                        <input value={formData.stockXL} required type="number" min={0} onChange={(e) => setFormData({ ...formData, stockXL: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-2 py-2 text-white text-center text-xs" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] text-brand-muted block text-center">XXL</span>
+                        <input value={formData.stockXXL} required type="number" min={0} onChange={(e) => setFormData({ ...formData, stockXXL: e.target.value })} className="w-full bg-brand-bg border border-brand-card rounded-lg px-2 py-2 text-white text-center text-xs" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-              <label className="text-sm text-brand-muted block">Product Images</label>
-              <ImageUploadDropzone value={formData.imageUrls} onChange={(urls) => setFormData({ ...formData, imageUrls: urls })} />
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Asset Pipeline (Images)</label>
+                  <ImageUploadDropzone value={formData.imageUrls} onChange={(urls) => setFormData({ ...formData, imageUrls: urls })} />
+                </div>
+              </form>
+            </div>
 
-              <label className="text-sm text-brand-muted block">Stock (M/L/XL/XXL)</label>
-              <div className="grid grid-cols-2 gap-2">
-                <input value={formData.stockM} required type="number" min={0} onChange={(e) => setFormData({ ...formData, stockM: e.target.value })} className="bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white" placeholder="M" />
-                <input value={formData.stockL} required type="number" min={0} onChange={(e) => setFormData({ ...formData, stockL: e.target.value })} className="bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white" placeholder="L" />
-                <input value={formData.stockXL} required type="number" min={0} onChange={(e) => setFormData({ ...formData, stockXL: e.target.value })} className="bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white" placeholder="XL" />
-                <input value={formData.stockXXL} required type="number" min={0} onChange={(e) => setFormData({ ...formData, stockXXL: e.target.value })} className="bg-brand-bg border border-brand-card rounded-lg px-3 py-2 text-white" placeholder="XXL" />
-              </div>
-
-              <button type="submit" className="w-full bg-brand-neon text-brand-bg py-3 rounded-lg font-bold hover:bg-[#4ddbb6] transition-colors">Save Product</button>
-            </form>
+            {/* Footer */}
+            <div className="p-6 border-t border-brand-card">
+              <button 
+                type="submit" 
+                form="product-form"
+                className="w-full bg-brand-neon text-brand-bg py-4 rounded-xl font-bold hover:bg-[#4ddbb6] transition-all hover:shadow-[0_0_20px_rgba(57,255,20,0.4)] active:scale-[0.98]"
+              >
+                {editingId ? "Commit Changes" : "Deploy Product"}
+              </button>
+            </div>
           </div>
         </div>
       )}
