@@ -123,13 +123,17 @@ export default function RootLayout({
                 </Link>
               </div>
               <nav className="hidden md:flex gap-8">
-                {["Collections", "Tech Specs", "About"].map((item) => (
+                {[
+                  { name: "Store", href: "/shop" },
+                  { name: "Collections", href: "/#collections" },
+                  { name: "Track", href: "/track" },
+                ].map((item) => (
                   <Link
-                    key={item}
-                    href={`/#${item.toLowerCase().replace(" ", "-")}`}
+                    key={item.name}
+                    href={item.href}
                     className="text-brand-text hover:text-brand-neon text-sm font-medium transition-colors cursor-pointer"
                   >
-                    {item}
+                    {item.name}
                   </Link>
                 ))}
               </nav>

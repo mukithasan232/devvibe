@@ -110,7 +110,7 @@ export default function HomeClient() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Link 
-                href="/#shop"
+                href="/shop"
                 className="bg-brand-neon text-brand-bg font-black px-10 py-5 rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(57,255,20,0.3)] flex items-center justify-center gap-2 tracking-tighter"
               >
                 {t.heroCta} <ArrowRight size={20} />
@@ -138,13 +138,13 @@ export default function HomeClient() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { name: "Drop Shoulder", desc: "Relaxed Boxy Fit", img: "/images/solid/5.png" },
-            { name: "Graphics Cotton", desc: "Visual Tech Code", img: "/images/graphics/1.png" },
-            { name: "Solid Minimalist", desc: "Clean Syntax", img: "/images/solid/7.png" },
+            { name: "Drop Shoulder", desc: "Relaxed Boxy Fit", img: "/images/solid/5.png", slug: "Drop Shoulder" },
+            { name: "Graphics Cotton", desc: "Visual Tech Code", img: "/images/graphics/1.png", slug: "Graphics" },
+            { name: "Solid Minimalist", desc: "Clean Syntax", img: "/images/solid/7.png", slug: "Solid" },
           ].map((cat) => (
             <Link 
               key={cat.name} 
-              href="/#shop" 
+              href={`/shop?category=${cat.slug}`} 
               className="group relative aspect-[3/4] md:h-[600px] rounded-[40px] overflow-hidden border border-brand-card hover:border-brand-neon/50 transition-all shadow-2xl bg-brand-paper"
             >
               <Image 
