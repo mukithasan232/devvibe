@@ -34,6 +34,9 @@ interface ProductShape {
   stockXL: number;
   stockXXL: number;
   isPublished: boolean;
+  isLimitedEdition?: boolean;
+  isPreOrder?: boolean;
+  isComingSoon?: boolean;
 }
 
 export default function HomeClient() {
@@ -197,6 +200,9 @@ export default function HomeClient() {
                         price={p.price}
                         imageUrl={p.imageUrl?.split(",")[0] || "https://devvibe.com/placeholder.jpg"}
                         category={p.category}
+                        isLimited={p.isLimitedEdition}
+                        isPreOrder={p.isPreOrder}
+                        isComingSoon={p.isComingSoon}
                         sizes={[
                           { size: "M", stock: p.stockM },
                           { size: "L", stock: p.stockL },

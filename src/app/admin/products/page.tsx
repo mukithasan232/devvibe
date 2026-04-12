@@ -20,6 +20,8 @@ interface ProductShape {
   stockXXL: number;
   isPublished: boolean;
   isLimitedEdition: boolean;
+  isPreOrder?: boolean;
+  isComingSoon?: boolean;
   costPrice: number;
 }
 
