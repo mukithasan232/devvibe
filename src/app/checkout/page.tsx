@@ -125,29 +125,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-brand-bg">
-      <header className="sticky top-0 z-50 w-full bg-brand-bg/80 backdrop-blur-md border-b border-brand-paper mb-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center gap-2 group transition-all">
-              <div className="relative w-32 h-10 overflow-hidden transform group-hover:scale-105 transition-transform">
-                <Image
-                  src="/images/logo/DevVibe.png"
-                  alt="DevVibe Logo"
-                  fill
-                  className="object-contain"
-                  sizes="128px"
-                  priority
-                />
-              </div>
-            </Link>
-            <div className="text-brand-muted text-xs font-mono uppercase tracking-widest hidden sm:block">
-              Checkout Process — Step 1/1
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-brand-bg pt-12">
       <div className="max-w-7xl mx-auto px-4 pb-16 sm:px-6 lg:px-8">
         <div className="mb-10">
           <h1 className="text-3xl font-bold text-white mb-2">{t.secureCheckout}</h1>
