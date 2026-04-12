@@ -26,21 +26,17 @@ export default function TrustBar() {
   );
 
   return (
-    <div className="w-full bg-white overflow-hidden h-10 md:h-12 flex items-center border-b border-[#0A192F]/10 select-none">
+    <div className="w-full bg-white overflow-hidden h-9 md:h-11 flex items-center border-b border-[#0A192F]/10 select-none relative z-40">
       <motion.div
-        className="flex shrink-0 will-change-transform w-max"
-        animate={{ x: ["0%", "-30%"] }}
+        className="flex shrink-0 will-change-transform"
+        animate={{ x: ["0%", "-50%"] }}
         transition={{
           repeat: Infinity,
           repeatType: "loop",
           ease: "linear",
-          duration: 20,
+          duration: 35, // Slower, more premium pace
         }}
       >
-        <div className="flex shrink-0">
-          {content}
-          {content}
-        </div>
         <div className="flex shrink-0">
           {content}
           {content}
