@@ -42,7 +42,22 @@ export async function GET() {
     const netProfit = totalRevenue - totalCost;
     const profitMargin = totalRevenue > 0 ? (netProfit / totalRevenue) * 100 : 0;
 
-    // 3. Sort Top Products
+    // 3. Last 7 Days Performance
+    const recentPerformance = Array.from({ length: 7 }).map((_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - (6 - i));
+      const dateStr = date.toISOString().slice(0, 10);
+      
+      const dayRevenue = orders
+        .filter(o => o.createdAt.toISOString().slice(0, 10) === dateStr && o.status !== 'CANCELLED')
+        .reduce((sum, o) => sum + o.totalAmount, 0);
+
+      const dayLabel = date.toLocaleDateString('en-US', { weekday: 'short' });
+
+      return { label: dayLabel, revenue: dayRevenue };
+    });
+
+    // 4. Sort Top Products
     const topProducts = Object.values(productSales)
       .sort((a, b) => b.revenue - a.revenue)
       .slice(0, 5);
@@ -57,7 +72,7 @@ export async function GET() {
         pendingOrders,
       },
       topProducts,
-      recentPerformance: [] // Placeholder for graph data
+      recentPerformance,
     });
   } catch (error) {
     console.error("Stats API Error:", error);

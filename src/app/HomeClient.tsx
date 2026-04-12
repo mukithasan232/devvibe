@@ -79,13 +79,13 @@ export default function HomeClient() {
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1920&auto=format&fit=crop"
+            src="/images/lifestyle/banner.png"
             alt="DevVibe Lifestyle"
             fill
-            className="object-cover opacity-60"
+            className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-bg via-brand-bg/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-bg via-brand-bg/60 to-transparent" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full pt-20">
@@ -138,9 +138,9 @@ export default function HomeClient() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
-            { name: "Drop Shoulder", desc: "Relaxed Boxy Fit", img: "https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=800" },
-            { name: "Graphics Cotton", desc: "Visual Tech Code", img: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=800" },
-            { name: "Solid Minimalist", desc: "Clean Syntax", img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800" },
+            { name: "Drop Shoulder", desc: "Relaxed Boxy Fit", img: "/images/solid/5.png" },
+            { name: "Graphics Cotton", desc: "Visual Tech Code", img: "/images/graphics/1.png" },
+            { name: "Solid Minimalist", desc: "Clean Syntax", img: "/images/solid/7.png" },
           ].map((cat) => (
             <Link 
               key={cat.name} 
@@ -151,7 +151,7 @@ export default function HomeClient() {
                 src={cat.img} 
                 alt={cat.name} 
                 fill 
-                className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-60 group-hover:opacity-100"
+                className="object-contain group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100 p-8"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-brand-bg via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 p-8 w-full">

@@ -108,24 +108,31 @@ export default function AdminDashboard() {
           </div>
           <div className="p-8">
             <div className="h-[250px] flex items-end justify-between gap-4">
-              {/* Simulated Data Points */}
-              {[40, 65, 45, 90, 60, 85, 100].map((h, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center gap-4 group">
-                  <div className="w-full relative">
-                    <motion.div 
-                      initial={{ height: 0 }}
-                      animate={{ height: `${h}%` }}
-                      transition={{ duration: 1, delay: i * 0.1 }}
-                      className="w-full bg-gradient-to-t from-brand-neon/5 to-brand-neon group-hover:to-white transition-all rounded-t-lg relative"
-                    >
-                      <div className="absolute top-[-30px] left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] font-bold text-brand-neon">
-                        ৳{Math.round(h * 1500)}
-                      </div>
-                    </motion.div>
+              {(stats?.recentPerformance && stats.recentPerformance.length > 0 ? stats.recentPerformance : [30, 45, 35, 60, 40, 55, 70]).map((val: any, i: number) => {
+                const h = typeof val === 'number' ? val : val.revenue;
+                const max = Math.max(...(stats?.recentPerformance?.map((d: any) => d.revenue) || [100]));
+                const pct = (h / (max || 1)) * 100;
+
+                return (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-4 group">
+                    <div className="w-full relative">
+                      <motion.div 
+                        initial={{ height: 0 }}
+                        animate={{ height: `${Math.max(10, pct)}%` }}
+                        transition={{ duration: 1, delay: i * 0.1 }}
+                        className="w-full bg-gradient-to-t from-brand-neon/5 to-brand-neon group-hover:to-white transition-all rounded-t-lg relative"
+                      >
+                        <div className="absolute top-[-30px] left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-[10px] font-bold text-brand-neon">
+                          ৳{h.toLocaleString()}
+                        </div>
+                      </motion.div>
+                    </div>
+                    <span className="text-[10px] uppercase font-bold text-brand-muted">
+                        {val.label || `D-${6-i}`}
+                    </span>
                   </div>
-                  <span className="text-[10px] uppercase font-bold text-brand-muted">Day {i+1}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className="mt-12 flex justify-between items-center bg-brand-bg/50 p-6 rounded-2xl border border-brand-card">
               <div>
