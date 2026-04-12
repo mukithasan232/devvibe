@@ -14,6 +14,7 @@ model Product {
   name        String
   description String
   price       Float
+  costPrice   Float    @default(0) // Added for Profit/Loss tracking
   imageUrl    String?  // Handled structurally as WebP optimized by Next.js
   category    String   @default("Round Neck") // Round Neck, Drop Shoulder, Minimalist
   

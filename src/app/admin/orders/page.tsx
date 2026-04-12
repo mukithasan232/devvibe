@@ -125,7 +125,12 @@ export default function AdminOrders() {
                     <div className="text-[10px] font-bold text-brand-muted uppercase tracking-wider">{order.paymentMethod}</div>
                     {order.trxId && <div className="font-mono text-brand-neon text-xs mt-1">{order.trxId}</div>}
                   </td>
-                  <td className="px-6 py-4 font-bold text-white">৳{order.totalAmount}</td>
+                  <td className="px-6 py-4 font-bold text-white">
+                    ৳{order.totalAmount}
+                    <div className="text-[9px] text-brand-neon mt-0.5">
+                      Yield: +৳{Math.round(order.totalAmount - (order as any).items.reduce((acc: number, item: any) => acc + (item.product?.costPrice || 0) * item.quantity, 0))}
+                    </div>
+                  </td>
                   <td className="px-6 py-4">
                     <select
                       value={order.status}
@@ -166,6 +171,7 @@ export default function AdminOrders() {
             </tbody>
           </table>
         </div>
+      </div>
     </div>
   );
 }

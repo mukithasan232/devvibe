@@ -19,6 +19,7 @@ interface ProductShape {
   stockXL: number;
   stockXXL: number;
   isPublished: boolean;
+  costPrice: number;
 }
 
 export default function AdminProducts() {
@@ -31,6 +32,7 @@ export default function AdminProducts() {
     name: "",
     description: "",
     price: "",
+    costPrice: "",
     imageUrls: [] as string[],
     category: "Solid",
     stockM: "0",
@@ -58,12 +60,13 @@ export default function AdminProducts() {
     fetchProducts();
   }, []);
 
-  const openForm = (product?: ProductShape) => {
+  const openForm = (product?: ProductShape & { costPrice?: number }) => {
     if (product) {
       setFormData({
         name: product.name,
         description: product.description ?? "",
         price: product.price.toString(),
+        costPrice: (product.costPrice ?? 0).toString(),
         imageUrls: product.imageUrl ? product.imageUrl.split(",") : [],
         category: product.category,
         stockM: product.stockM.toString(),
@@ -77,6 +80,7 @@ export default function AdminProducts() {
         name: "",
         description: "",
         price: "",
+        costPrice: "0",
         imageUrls: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop"],
         category: "Solid",
         stockM: "0",
@@ -96,6 +100,7 @@ export default function AdminProducts() {
       name: formData.name,
       description: formData.description,
       price: Number(formData.price),
+      costPrice: Number(formData.costPrice),
       imageUrl: formData.imageUrls.join(","),
       category: formData.category,
       stockM: Number(formData.stockM),
@@ -224,7 +229,7 @@ export default function AdminProducts() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Price (BDT)</label>
+                    <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">MSRP Price (BDT)</label>
                     <input 
                       value={formData.price} 
                       required 
@@ -232,6 +237,17 @@ export default function AdminProducts() {
                       onChange={(e) => setFormData({ ...formData, price: e.target.value })} 
                       className="w-full bg-brand-bg border border-brand-card rounded-xl px-4 py-3 text-white focus:border-brand-neon outline-none" 
                       placeholder="450"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase tracking-widest text-brand-muted">Hardware Cost (Profit Base)</label>
+                    <input 
+                      value={formData.costPrice} 
+                      required 
+                      type="number" 
+                      onChange={(e) => setFormData({ ...formData, costPrice: e.target.value })} 
+                      className="w-full bg-brand-bg border border-brand-card rounded-xl px-4 py-3 text-white focus:border-[#FF5555] outline-none" 
+                      placeholder="200"
                     />
                   </div>
                 </div>
