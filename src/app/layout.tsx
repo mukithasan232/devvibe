@@ -58,6 +58,8 @@ export const metadata: Metadata = {
 // Core Layout and Navigation
 import Header from "@/components/Header";
 import PageTransition from "@/components/PageTransition";
+
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

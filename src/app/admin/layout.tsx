@@ -33,13 +33,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Mobile Backdrop */}
       {isSidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] md:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[195] md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar - Dynamic Responsive */}
-      <aside className={`fixed inset-y-0 left-0 w-64 bg-brand-paper border-r border-brand-card flex flex-col pt-6 shrink-0 z-[70] transition-transform duration-300 transform md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} print:hidden`}>
+      <aside className={`fixed inset-y-0 left-0 w-64 bg-brand-paper border-r border-brand-card flex flex-col pt-6 shrink-0 z-[200] transition-transform duration-300 transform md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} print:hidden`}>
         <div className="px-6 mb-10 flex items-center justify-between">
           <Link href="/admin" className="relative w-32 h-10 block group">
             <Image
@@ -89,7 +89,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Admin Mobile Header */}
-        <header className="h-16 border-b border-brand-card bg-brand-paper/50 backdrop-blur-md flex items-center justify-between px-4 md:hidden shrink-0 z-50">
+        <header className="h-16 border-b border-brand-card bg-brand-paper/50 backdrop-blur-md flex items-center justify-between px-4 md:hidden shrink-0 z-[190]">
            <button onClick={() => setIsSidebarOpen(true)} className="p-2 text-brand-neon">
               <LayoutDashboard size={24} />
            </button>

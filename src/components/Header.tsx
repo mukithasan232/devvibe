@@ -11,8 +11,10 @@ import MobileMenu from "@/components/MobileMenu";
 export default function Header() {
   const pathname = usePathname();
   
-  // Hide main header on admin routes
-  if (pathname?.startsWith("/admin")) {
+  // High-priority guard to prevent header collision in Admin Workspace
+  const isAdminPath = pathname === "/admin" || pathname?.startsWith("/admin/");
+  
+  if (isAdminPath) {
     return null;
   }
 

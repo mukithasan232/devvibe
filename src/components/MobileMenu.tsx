@@ -9,8 +9,16 @@ interface MobileMenuProps {
   navItems: Array<{ name: string; href: string }>;
 }
 
+import { usePathname } from "next/navigation";
+
 export default function MobileMenu({ navItems }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Force close on route change to prevent ghosting
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   // Lock scroll when menu is open
   useEffect(() => {
