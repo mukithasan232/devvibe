@@ -3,35 +3,64 @@ import prisma from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const totalSalesData = await prisma.order.aggregate({
-      _sum: { totalAmount: true },
-      _count: { id: true },
-      where: { status: { not: "CANCELLED" } },
+    // 1. Fetch all orders with items and product details
+    const orders = await prisma.order.findMany({
+      include: {
+        items: {
+          include: {
+            product: true
+          }
+        }
+      }
     });
 
-    const lowStock = await prisma.product.count({
-      where: {
-        OR: [
-          { stockM: { lt: 5 } },
-          { stockL: { lt: 5 } },
-          { stockXL: { lt: 5 } },
-          { stockXXL: { lt: 5 } },
-        ],
-      },
+    // 2. Financial Aggregation
+    let totalRevenue = 0;
+    let totalCost = 0;
+    let totalOrders = orders.length;
+    let pendingOrders = 0;
+    let productSales: Record<string, { name: string, quantity: number, revenue: number }> = {};
+
+    orders.forEach(order => {
+      if (order.status !== 'CANCELLED') {
+        totalRevenue += order.totalAmount;
+        
+        order.items.forEach(item => {
+          totalCost += (item.product?.costPrice || 0) * item.quantity;
+          
+          if (!productSales[item.productId]) {
+            productSales[item.productId] = { name: item.product?.name || "Unknown Product", quantity: 0, revenue: 0 };
+          }
+          productSales[item.productId].quantity += item.quantity;
+          productSales[item.productId].revenue += item.price * item.quantity;
+        });
+
+        if (order.status === 'PENDING') pendingOrders++;
+      }
     });
 
-    const inventory = await prisma.product.findMany({
-      select: { id: true, name: true, stockM: true, stockL: true, stockXL: true, stockXXL: true },
-    });
+    const netProfit = totalRevenue - totalCost;
+    const profitMargin = totalRevenue > 0 ? (netProfit / totalRevenue) * 100 : 0;
+
+    // 3. Sort Top Products
+    const topProducts = Object.values(productSales)
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 5);
 
     return NextResponse.json({
-      totalSales: Number(totalSalesData._sum.totalAmount ?? 0),
-      totalOrders: totalSalesData._count.id,
-      lowStockItems: lowStock,
-      inventory,
+      summary: {
+        totalRevenue,
+        totalCost,
+        netProfit,
+        profitMargin: profitMargin.toFixed(2),
+        totalOrders,
+        pendingOrders,
+      },
+      topProducts,
+      recentPerformance: [] // Placeholder for graph data
     });
   } catch (error) {
-    console.error("GET /api/admin/stats error:", error);
-    return NextResponse.json({ error: "Failed to load dashboard stats" }, { status: 500 });
+    console.error("Stats API Error:", error);
+    return NextResponse.json({ error: "Failed to generate report" }, { status: 500 });
   }
 }
