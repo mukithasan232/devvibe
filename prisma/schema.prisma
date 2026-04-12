@@ -72,6 +72,10 @@ model Order {
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
+  // Courier Integration Tracking
+  courierTrackingId String?   // Tracking number provided by the courier
+  courierOrderId    String?   // Internal Order ID provided by the courier system
+
   // Bi-directional relation mapping
   items           OrderItem[]
 }
