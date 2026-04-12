@@ -7,7 +7,6 @@ import { Providers } from "@/components/Providers";
 import { LanguageProvider } from "@/components/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
 import Link from "next/link";
-import PageTransition from "@/components/PageTransition";
 import { Analytics } from "@vercel/analytics/next";
 import VisitorTracker from "@/components/analytics/VisitorTracker";
 import Script from "next/script";
