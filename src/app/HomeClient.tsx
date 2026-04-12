@@ -217,7 +217,7 @@ export default function HomeClient() {
             ))}
             </div>
         )}
-      </section>n>
+      </section>
 
       {/* Tech Spec section */}
       <section className="bg-brand-paper/30 py-32 border-y border-brand-card relative">
