@@ -156,10 +156,10 @@ export default function HomeClient() {
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-brand-bg via-transparent to-transparent opacity-80" />
-              <div className="absolute bottom-0 left-0 p-10 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <div className="h-1.5 w-12 bg-brand-neon mb-6 group-hover:w-full transition-all duration-700 rounded-full"></div>
-                <h3 className="text-4xl font-black text-white mb-3 tracking-tighter">{cat.name}</h3>
-                <p className="text-brand-neon font-bold text-xs uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-opacity duration-700">{cat.desc}</p>
+              <div className="absolute bottom-0 left-0 p-8 w-full translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="h-1.5 w-10 bg-brand-neon mb-4 group-hover:w-full transition-all duration-700 rounded-full"></div>
+                <h3 className="text-3xl font-black text-white mb-2 tracking-tighter leading-tight">{cat.name}</h3>
+                <p className="text-brand-neon font-bold text-[10px] uppercase tracking-[0.3em] opacity-0 group-hover:opacity-100 transition-opacity duration-700">{cat.desc}</p>
               </div>
             </Link>
           ))}
