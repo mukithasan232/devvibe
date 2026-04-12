@@ -1,7 +1,8 @@
-import prisma from "@/lib/prisma";
+"use client";
+
 import Image from "next/image";
-import { notFound } from "next/navigation";
-import { Download } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useParams, notFound } from "next/navigation";
 
 interface OrderItem {
   id: string;
@@ -13,36 +14,38 @@ interface OrderItem {
   } | null;
 }
 
-export default async function PublicInvoicePage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default function PublicInvoicePage() {
+  const params = useParams();
+  const id = params.id as string;
+  const [order, setOrder] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const order = await prisma.order.findFirst({
-    where: { 
-      OR: [
-        { id: id },
-        { serializedId: id }
-      ]
-    },
-    include: {
-      items: {
-        include: {
-          product: {
-            select: {
-              name: true
-            }
-          },
-        },
-      },
-    },
-  });
+  useEffect(() => {
+    async function fetchOrder() {
+      try {
+        const res = await fetch(`/api/orders/${id}`);
+        const data = await res.json();
+        if (data.order) {
+            setOrder(data.order);
+        } else {
+            notFound();
+        }
+      } catch (error) {
+        console.error("Public Invoice Load Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchOrder();
+  }, [id]);
 
-  if (!order) notFound();
+  if (loading) return <div className="p-20 text-center font-black animate-pulse uppercase tracking-widest text-brand-neon bg-brand-bg min-h-screen">AUTHENTICATING RECEIPT...</div>;
+  if (!order) return null;
 
   return (
-    <div className="bg-slate-50 min-h-screen p-4 sm:p-8 text-slate-900 font-sans">
-      <div className="max-w-4xl mx-auto border border-slate-200 p-6 sm:p-12 bg-white shadow-2xl rounded-[32px] print:shadow-none print:border-none print:p-0">
-        
-        <div className="flex flex-col sm:flex-row justify-between items-start gap-8 mb-12">
+    <div className="bg-white min-h-screen p-8 text-slate-900 font-sans print:p-0">
+      <div className="max-w-4xl mx-auto border border-slate-200 p-12 bg-white shadow-xl print:shadow-none print:border-none">
+        <div className="flex justify-between items-start mb-12">
           <div>
             <div className="relative w-48 h-12 mb-4">
               <Image 
@@ -58,16 +61,16 @@ export default async function PublicInvoicePage({ params }: { params: Promise<{ 
               Dhaka, Bangladesh.
             </p>
           </div>
-          <div className="text-left sm:text-right">
+          <div className="text-right">
             <h1 className="text-4xl font-black text-slate-900 uppercase tracking-tighter mb-2">Invoice</h1>
             <p className="font-mono text-xs text-slate-500 uppercase">#{order.serializedId}</p>
             <p className="text-sm text-slate-500 mt-1">{new Date(order.createdAt).toLocaleDateString()}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 mb-12 border-t border-slate-100 pt-12">
+        <div className="grid grid-cols-2 gap-12 mb-12 border-t border-slate-100 pt-12">
           <div>
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Customer Details</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Bill To</h4>
             <div className="space-y-1">
               <p className="font-bold text-lg">{order.customerName}</p>
               <p className="text-slate-500 text-sm">{order.customerPhone}</p>
@@ -75,57 +78,68 @@ export default async function PublicInvoicePage({ params }: { params: Promise<{ 
             </div>
           </div>
           <div className="bg-slate-50 p-6 rounded-2xl h-fit">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Order Summary</h4>
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4">Payment Details</h4>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-slate-500">Method:</span>
                 <span className="font-bold uppercase">{order.paymentMethod}</span>
               </div>
-              <div className="flex justify-between text-sm border-t border-slate-200 pt-2 mt-2">
-                <span className="text-slate-500">Total Status:</span>
-                <span className="font-black text-slate-900 italic">PAID / ৳{order.totalAmount}</span>
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Status:</span>
+                <span className="font-bold text-green-600 italic uppercase">Paid & Approved</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-            <table className="w-full text-left mb-12">
-            <thead>
-                <tr className="border-b-2 border-slate-900">
-                <th className="py-4 text-xs font-black uppercase tracking-widest">Item Description</th>
-                <th className="py-4 text-xs font-black uppercase tracking-widest text-center">Qty</th>
-                <th className="py-4 text-xs font-black uppercase tracking-widest text-right">Price</th>
-                </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-                {(order.items as unknown as OrderItem[]).map((itm) => (
-                <tr key={itm.id}>
-                    <td className="py-6">
-                    <p className="font-bold text-slate-900">{itm.product?.name || "Premium DevVibe Apparel"}</p>
-                    <p className="text-xs text-slate-500 uppercase font-mono mt-1">Size: {itm.size}</p>
-                    </td>
-                    <td className="py-6 text-center text-sm">{itm.quantity}</td>
-                    <td className="py-6 text-right font-bold text-slate-900">৳{itm.price}</td>
-                </tr>
-                ))}
-            </tbody>
-            </table>
+        <table className="w-full text-left mb-12">
+          <thead>
+            <tr className="border-b-2 border-slate-900">
+              <th className="py-4 text-xs font-black uppercase tracking-widest">Item Description</th>
+              <th className="py-4 text-xs font-black uppercase tracking-widest text-center">Qty</th>
+              <th className="py-4 text-xs font-black uppercase tracking-widest text-right">Unit Price</th>
+              <th className="py-4 text-xs font-black uppercase tracking-widest text-right">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {(order.items as unknown as OrderItem[]).map((itm) => (
+              <tr key={itm.id}>
+                <td className="py-6">
+                  <p className="font-bold text-slate-900">{itm.product?.name || "Premium DevVibe Product"}</p>
+                  <p className="text-xs text-slate-500 uppercase font-mono mt-1">Size: {itm.size}</p>
+                </td>
+                <td className="py-6 text-center text-sm">{itm.quantity}</td>
+                <td className="py-6 text-right text-sm">৳{Math.round(itm.price / itm.quantity)}</td>
+                <td className="py-6 text-right font-bold text-slate-900">৳{itm.price}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="flex justify-end mb-12">
+          <div className="w-64 space-y-4">
+            <div className="flex justify-between text-sm text-slate-500">
+              <span>Subtotal:</span>
+              <span>৳{order.totalAmount}</span>
+            </div>
+            <div className="flex justify-between text-xl font-black border-t-2 border-slate-900 pt-4">
+              <span>Total:</span>
+              <span>৳{order.totalAmount}</span>
+            </div>
+          </div>
         </div>
 
         <div className="border-t border-slate-100 pt-12 text-center">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">Thank you for choosing DevVibe</p>
-            <p className="text-[10px] text-slate-400 italic">This is an official transaction record. For support, contact us at devvibebd@gmail.com</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 mb-2">Thank you for your purchase</p>
+            <p className="text-[10px] text-slate-400 italic font-mono uppercase tracking-widest">DevVibe Enterprise Invoicing System</p>
         </div>
-
       </div>
-      
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 print:hidden z-50">
+      <div className="fixed bottom-8 right-8 print:hidden flex gap-4">
           <button 
             onClick={() => window.print()}
-            className="bg-slate-900 text-white px-12 py-5 rounded-2xl font-black text-sm uppercase tracking-widest shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:scale-105 active:scale-95 transition-all flex items-center gap-3"
+            className="bg-slate-900 text-white px-8 py-4 rounded-xl font-bold shadow-2xl hover:scale-105 transition-all flex items-center gap-2"
           >
-              <Download size={20} /> Download Invoice
+              Download PDF / Print
           </button>
       </div>
     </div>

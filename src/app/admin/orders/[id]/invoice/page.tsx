@@ -1,6 +1,8 @@
-import prisma from "@/lib/prisma";
+"use client";
+
 import Image from "next/image";
-import { notFound } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams, notFound } from "next/navigation";
 
 interface OrderItem {
   id: string;
@@ -12,29 +14,38 @@ interface OrderItem {
   } | null;
 }
 
-export default async function AdminInvoicePage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default function AdminInvoicePage() {
+  const params = useParams();
+  const id = params.id as string;
+  const [order, setOrder] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const order = await prisma.order.findUnique({
-    where: { id: id },
-    include: {
-      items: {
-        include: {
-          product: {
-            select: {
-              name: true
-            }
-          },
-        },
-      },
-    },
-  });
+  useEffect(() => {
+    async function fetchOrder() {
+      try {
+        const res = await fetch(`/api/orders/${id}`);
+        const data = await res.json();
+        if (data.order) {
+            setOrder(data.order);
+        } else {
+            notFound();
+        }
+      } catch (error) {
+        console.error("Invoice Load Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchOrder();
+  }, [id]);
 
-  if (!order) notFound();
+  if (loading) return <div className="p-20 text-center font-black animate-pulse uppercase tracking-widest">Generating Secure Payload...</div>;
+  if (!order) return null;
 
   return (
     <div className="bg-white min-h-screen p-8 text-slate-900 font-sans print:p-0">
       <div className="max-w-4xl mx-auto border border-slate-200 p-12 bg-white shadow-xl print:shadow-none print:border-none">
+        
         <div className="flex justify-between items-start mb-12">
           <div>
             <div className="relative w-48 h-12 mb-4">
@@ -124,6 +135,7 @@ export default async function AdminInvoicePage({ params }: { params: Promise<{ i
             <p className="text-[10px] text-slate-400 italic">This is a system generated invoice. Dhaka, Bangladesh.</p>
         </div>
       </div>
+      
       <div className="fixed bottom-8 right-8 print:hidden flex gap-4">
           <button 
             onClick={() => window.print()}
