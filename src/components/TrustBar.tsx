@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 
 export default function TrustBar() {
   const items = [
-    { icon: Star, text: "FREE DELIVERY IN BANGLADESH", fill: true },
+    { icon: Star, text: "PRE-ORDER AVAILABLE NOW", fill: true },
+    { icon: Star, text: "COMING SOON: SEASON 01 DROP", fill: true },
     { icon: ShieldCheck, text: "PREMIUM 220 GSM BIO-WASHED COTTON" },
     { icon: Leaf, text: "100% ORGANIC VERIFIED SOURCE" },
-    { icon: Star, text: "PREMIUM QUALITY GUARANTEED", fill: true },
   ];
 
   const content = (

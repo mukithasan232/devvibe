@@ -99,7 +99,7 @@ export default function HomeClient() {
               Season 01: The Syntax Drop
             </div>
             
-            <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.9]">
+            <h1 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-6 leading-[0.9]">
               COMPILED <br />
               <span className="text-brand-neon">FOR COMFORT.</span>
             </h1>
@@ -131,7 +131,7 @@ export default function HomeClient() {
       <section className="max-w-7xl mx-auto px-4 py-32 sm:px-6 lg:px-8" id="collections">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
           <div>
-            <h2 className="text-5xl font-black text-white tracking-tighter uppercase leading-none mb-4">Shop Categories</h2>
+            <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none mb-4">Shop Categories</h2>
             <p className="text-brand-muted font-medium text-lg">Select your preferred fit and style matrix.</p>
           </div>
           <div className="hidden md:block h-px flex-1 bg-brand-card ml-12 mb-4 opacity-50"></div>
@@ -170,7 +170,7 @@ export default function HomeClient() {
       <section id="shop" className="max-w-7xl mx-auto px-4 py-32 sm:px-6 lg:px-8 border-t border-brand-paper">
         <div className="text-center mb-24">
           <p className="text-brand-neon font-black text-xs uppercase tracking-[0.4em] mb-4">Live Drops</p>
-          <h2 className="text-7xl font-black text-white tracking-tighter uppercase mb-6">Latest Arrivals</h2>
+          <h2 className="text-4xl md:text-7xl font-black text-white tracking-tighter uppercase mb-6">Latest Arrivals</h2>
           <div className="flex justify-center gap-4">
             <div className="h-2 w-32 bg-brand-neon rounded-full shadow-[0_0_15px_rgba(57,255,20,0.5)]" />
             <div className="h-2 w-8 bg-brand-card rounded-full" />

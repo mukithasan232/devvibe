@@ -41,6 +41,8 @@ export default function AdminProducts() {
     stockXL: "0",
     stockXXL: "0",
     isLimitedEdition: false,
+    isPreOrder: false,
+    isComingSoon: false,
   });
 
   const fetchProducts = async () => {
@@ -97,6 +99,8 @@ export default function AdminProducts() {
         stockXL: product.stockXL.toString(),
         stockXXL: product.stockXXL.toString(),
         isLimitedEdition: product.isLimitedEdition ?? false,
+        isPreOrder: product.isPreOrder ?? false,
+        isComingSoon: product.isComingSoon ?? false,
       });
       setEditingId(product.id);
     } else {
@@ -112,6 +116,8 @@ export default function AdminProducts() {
         stockXL: "0",
         stockXXL: "0",
         isLimitedEdition: false,
+        isPreOrder: false,
+        isComingSoon: false,
       });
       setEditingId(null);
     }
@@ -133,6 +139,8 @@ export default function AdminProducts() {
       stockXL: Number(formData.stockXL),
       stockXXL: Number(formData.stockXXL),
       isLimitedEdition: formData.isLimitedEdition,
+      isPreOrder: formData.isPreOrder,
+      isComingSoon: formData.isComingSoon,
     };
 
     try {
@@ -235,21 +243,21 @@ export default function AdminProducts() {
         <div className="fixed inset-0 bg-brand-bg/90 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-brand-paper border border-brand-card rounded-[32px] w-full max-w-2xl shadow-2xl relative flex flex-col max-h-[95vh] my-8">
             {/* Header */}
-            <div className="p-8 border-b border-brand-card flex justify-between items-center bg-brand-bg/50 rounded-t-[32px]">
+            <div className="p-4 md:p-8 border-b border-brand-card flex justify-between items-center bg-brand-bg/50 rounded-t-[32px]">
               <div>
                 <p className="text-[10px] font-black text-brand-neon uppercase tracking-[0.3em] mb-1">Product Configuration</p>
-                <h2 className="text-2xl font-black text-white tracking-tighter uppercase italic">{editingId ? "Modify Instance" : "Initialize New Entry"}</h2>
+                <h2 className="text-xl md:text-2xl font-black text-white tracking-tighter uppercase italic">{editingId ? "Modify Instance" : "Initialize New Entry"}</h2>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-3 bg-brand-bg border border-brand-card rounded-2xl text-brand-muted hover:text-white transition-all hover:rotate-90 hover:border-brand-neon/50"
+                className="p-2 md:p-3 bg-brand-bg border border-brand-card rounded-2xl text-brand-muted hover:text-white transition-all hover:rotate-90 hover:border-brand-neon/50"
               >
                 <X size={20} />
               </button>
             </div>
 
             {/* Scrollable Form Body */}
-            <div className="p-8 overflow-y-auto custom-scrollbar">
+            <div className="p-4 md:p-8 overflow-y-auto custom-scrollbar">
               <form id="product-form" onSubmit={handleSave} className="space-y-8">
                 <div className="flex justify-end">
                    <button 
@@ -310,14 +318,28 @@ export default function AdminProducts() {
                     </select>
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-muted">Type Status</label>
-                    <div className="flex items-center gap-4 h-[60px]">
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-muted">Lifecycle Status</label>
+                    <div className="flex flex-wrap gap-2 min-h-[60px]">
                        <button
                         type="button"
                         onClick={() => setFormData({...formData, isLimitedEdition: !formData.isLimitedEdition})}
-                        className={`flex-1 h-full rounded-2xl border font-black text-xs uppercase tracking-widest transition-all ${formData.isLimitedEdition ? 'bg-orange-500/20 border-orange-500 text-orange-500' : 'bg-brand-bg border-brand-card text-brand-muted'}`}
+                        className={`flex-1 min-w-[120px] h-12 rounded-xl border font-black text-[9px] uppercase tracking-widest transition-all ${formData.isLimitedEdition ? 'bg-orange-500/20 border-orange-500 text-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.2)]' : 'bg-brand-bg border-brand-card text-brand-muted opacity-50'}`}
                        >
-                         {formData.isLimitedEdition ? 'Limited Edition active' : 'Standard Release'}
+                         {formData.isLimitedEdition ? 'Limited Edition active' : 'Standard Edition'}
+                       </button>
+                       <button
+                        type="button"
+                        onClick={() => setFormData({...formData, isPreOrder: !formData.isPreOrder})}
+                        className={`flex-1 min-w-[120px] h-12 rounded-xl border font-black text-[9px] uppercase tracking-widest transition-all ${formData.isPreOrder ? 'bg-blue-500/20 border-blue-500 text-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)]' : 'bg-brand-bg border-brand-card text-brand-muted opacity-50'}`}
+                       >
+                         {formData.isPreOrder ? 'Pre-order active' : 'Regular Order'}
+                       </button>
+                       <button
+                        type="button"
+                        onClick={() => setFormData({...formData, isComingSoon: !formData.isComingSoon})}
+                        className={`flex-1 min-w-[120px] h-12 rounded-xl border font-black text-[9px] uppercase tracking-widest transition-all ${formData.isComingSoon ? 'bg-brand-neon/20 border-brand-neon text-brand-neon shadow-[0_0_15px_rgba(57,255,20,0.2)]' : 'bg-brand-bg border-brand-card text-brand-muted opacity-50'}`}
+                       >
+                         {formData.isComingSoon ? 'Coming Soon / Teaser' : 'Live Status'}
                        </button>
                     </div>
                   </div>
@@ -325,7 +347,7 @@ export default function AdminProducts() {
 
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-muted">Inventory Matrix (Stocks)</label>
-                  <div className="grid grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {["M", "L", "XL", "XXL"].map((sz) => (
                       <div key={sz} className="space-y-2">
                         <span className="text-[9px] font-bold text-brand-muted block text-center">{sz}</span>

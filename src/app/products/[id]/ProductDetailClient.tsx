@@ -75,13 +75,28 @@ export default function ProductDetailClient({ product }: { product: any }) {
                 src={mainImage} 
                 alt={product.name} 
                 fill 
-                className="object-contain p-12"
+                className="object-contain p-6 md:p-12"
                 priority
               />
-              <div className="absolute top-6 left-6">
-                 <span className="bg-brand-neon/10 backdrop-blur-md border border-brand-neon/30 text-brand-neon px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">
+              <div className="absolute top-6 left-6 flex flex-col gap-3">
+                 <span className="bg-brand-neon/10 backdrop-blur-md border border-brand-neon/30 text-brand-neon px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg w-fit">
                     {product.category}
                  </span>
+                {product.isLimitedEdition && (
+                  <div className="bg-orange-500 text-brand-bg px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest italic shadow-2xl w-fit">
+                    Limited Edition
+                  </div>
+                )}
+                {product.isPreOrder && (
+                  <div className="bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest italic shadow-2xl w-fit">
+                    Pre-order
+                  </div>
+                )}
+                {product.isComingSoon && (
+                  <div className="bg-brand-neon text-brand-bg px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest italic shadow-2xl w-fit">
+                    Coming Soon
+                  </div>
+                )}
               </div>
             </motion.div>
             
@@ -112,7 +127,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.1 }}
-                  className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-tight mb-4 italic"
+                  className="text-4xl md:text-7xl font-black text-white tracking-tighter uppercase leading-tight mb-4 italic"
                 >
                   {product.name}
                 </motion.h1>
@@ -159,11 +174,15 @@ export default function ProductDetailClient({ product }: { product: any }) {
 
                    <button 
                     onClick={handleAddToCart}
-                    disabled={added}
-                    className={`w-full py-6 rounded-2xl flex items-center justify-center gap-4 transition-all overflow-hidden relative ${added ? 'bg-green-500 scale-95' : 'bg-brand-neon hover:scale-[1.02] active:scale-95 shadow-[0_0_40px_rgba(57,255,20,0.2)]'}`}
+                    disabled={added || product.isComingSoon}
+                    className={`w-full py-6 rounded-2xl flex items-center justify-center gap-4 transition-all overflow-hidden relative ${product.isComingSoon ? 'bg-brand-paper cursor-not-allowed opacity-50' : added ? 'bg-green-500 scale-95' : 'bg-brand-neon hover:scale-[1.02] active:scale-95 shadow-[0_0_40px_rgba(57,255,20,0.2)]'}`}
                    >
                      <AnimatePresence mode="wait">
-                       {added ? (
+                       {product.isComingSoon ? (
+                         <motion.div key="coming" initial={{ y: 20 }} animate={{ y: 0 }} className="flex items-center gap-3 text-brand-muted font-black uppercase tracking-widest italic">
+                            <Layers size={20} /> Teaser: Coming Soon
+                         </motion.div>
+                       ) : added ? (
                          <motion.div 
                           key="added"
                           initial={{ y: 20 }} animate={{ y: 0 }}
@@ -177,7 +196,7 @@ export default function ProductDetailClient({ product }: { product: any }) {
                           initial={{ y: -20 }} animate={{ y: 0 }}
                           className="flex items-center gap-3 text-brand-bg font-black uppercase tracking-widest italic"
                          >
-                           <ShoppingBag size={20} /> Initialize Checkout
+                           <ShoppingBag size={20} /> {product.isPreOrder ? "Secure Pre-order" : "Initialize Checkout"}
                          </motion.div>
                        )}
                      </AnimatePresence>

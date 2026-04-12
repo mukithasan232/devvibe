@@ -33,7 +33,10 @@ export async function POST(req: Request) {
         stockL: Number(stockL ?? 0),
         stockXL: Number(stockXL ?? 0),
         stockXXL: Number(stockXXL ?? 0),
-        isLimitedEdition: Boolean(body.isLimitedEdition ?? false),
+        isPublished: true,
+        isLimitedEdition: body.isLimitedEdition || false,
+        isPreOrder: body.isPreOrder || false,
+        isComingSoon: body.isComingSoon || false,
       },
     });
 

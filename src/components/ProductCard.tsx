@@ -13,10 +13,12 @@ interface ProductCardProps {
   imageUrl: string;
   category: string;
   isLimited?: boolean;
+  isPreOrder?: boolean;
+  isComingSoon?: boolean;
   sizes: { size: string; stock: number }[];
 }
 
-export default function ProductCard({ id, name, price, imageUrl, category, sizes, isLimited }: ProductCardProps) {
+export default function ProductCard({ id, name, price, imageUrl, category, sizes, isLimited, isPreOrder, isComingSoon }: ProductCardProps) {
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
 
@@ -48,6 +50,18 @@ export default function ProductCard({ id, name, price, imageUrl, category, sizes
         {isLimited && (
           <div className="absolute top-6 left-6 z-10 bg-orange-500 text-brand-bg text-[10px] font-black px-3 py-1.5 rounded-xl shadow-2xl uppercase tracking-widest italic">
             Limited
+          </div>
+        )}
+
+        {isPreOrder && (
+          <div className="absolute top-6 left-6 z-10 bg-blue-500 text-white text-[10px] font-black px-3 py-1.5 rounded-xl shadow-2xl uppercase tracking-widest italic">
+            Pre-order
+          </div>
+        )}
+
+        {isComingSoon && (
+          <div className="absolute top-6 left-6 z-10 bg-brand-neon text-brand-bg text-[10px] font-black px-3 py-1.5 rounded-xl shadow-2xl uppercase tracking-widest italic">
+            Coming Soon
           </div>
         )}
         

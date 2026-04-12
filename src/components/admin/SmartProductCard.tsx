@@ -17,6 +17,8 @@ interface ProductProps {
   imageUrl: string;
   category: string;
   isLimited?: boolean;
+  isPreOrder?: boolean;
+  isComingSoon?: boolean;
   sizes: ProductSize[];
 }
 
@@ -37,12 +39,24 @@ export default function SmartProductCard({ product }: { product: ProductProps })
       onMouseLeave={() => setIsHovered(false)}
       className="relative bg-brand-paper border border-brand-card rounded-xl overflow-hidden shadow-lg group"
     >
-      {/* Limited Edition Badge */}
-      {product.isLimited && (
-        <div className="absolute top-3 left-3 z-10 bg-orange-500 text-brand-bg text-[10px] font-black px-2 py-1 rounded-md shadow-lg uppercase tracking-tighter italic">
-          Limited Edition
-        </div>
-      )}
+      {/* Lifecycle Badges */}
+      <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+        {product.isLimited && (
+          <div className="bg-orange-500 text-brand-bg text-[10px] font-black px-2 py-1 rounded-md shadow-lg uppercase tracking-tighter italic">
+            Limited Edition
+          </div>
+        )}
+        {product.isPreOrder && (
+          <div className="bg-blue-500 text-white text-[10px] font-black px-2 py-1 rounded-md shadow-lg uppercase tracking-tighter italic">
+            Pre-order
+          </div>
+        )}
+        {product.isComingSoon && (
+          <div className="bg-brand-neon text-brand-bg text-[10px] font-black px-2 py-1 rounded-md shadow-lg uppercase tracking-tighter italic">
+            Coming Soon
+          </div>
+        )}
+      </div>
 
       {/* Stock Alert Badge */}
       {isLowStock && (

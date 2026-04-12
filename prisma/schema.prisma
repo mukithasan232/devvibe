@@ -24,8 +24,10 @@ model Product {
   stockXL     Int      @default(0)
   stockXXL    Int      @default(0)
   
-  isPublished Boolean  @default(true)
-  isLimitedEdition Boolean @default(false)
+  isPublished      Boolean  @default(false)
+  isLimitedEdition Boolean  @default(false)
+  isPreOrder       Boolean  @default(false)
+  isComingSoon     Boolean  @default(false)
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

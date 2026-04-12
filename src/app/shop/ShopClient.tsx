@@ -31,6 +31,8 @@ interface ProductShape {
   stockXXL: number;
   isPublished: boolean;
   isLimitedEdition: boolean;
+  isPreOrder: boolean;
+  isComingSoon: boolean;
 }
 
 export default function ShopClient() {
@@ -66,10 +68,12 @@ export default function ShopClient() {
 
   const filteredProducts = useMemo(() => {
     return products
-      .filter(p => p.isPublished)
+      .filter(p => p.isPublished || p.isComingSoon || p.isPreOrder) // Show published items OR teasers
       .filter(p => {
         if (category === "All") return true;
         if (category === "Limited Edition") return p.isLimitedEdition;
+        if (category === "Pre-order") return p.isPreOrder;
+        if (category === "Coming Soon") return p.isComingSoon;
         return p.category === category;
       })
       .filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
@@ -80,7 +84,7 @@ export default function ShopClient() {
       });
   }, [products, search, category, sortBy]);
 
-  const categories = ["All", "Solid", "Graphics", "Drop Shoulder", "Limited Edition"];
+  const categories = ["All", "Solid", "Graphics", "Drop Shoulder", "Limited Edition", "Pre-order", "Coming Soon"];
 
   return (
     <div className="min-h-screen bg-brand-bg pt-20 pb-20">
@@ -160,7 +164,7 @@ export default function ShopClient() {
             <div className="p-6 bg-brand-neon/5 border border-brand-neon/20 rounded-3xl">
                 <p className="text-brand-neon font-black text-[10px] uppercase tracking-widest mb-2">Pro Tip</p>
                 <p className="text-sm text-brand-muted leading-relaxed">
-                    Filter by <strong>Solid</strong> if you're looking for our minimal core syntax collection.
+                    Looking for the latest drops? Filter by <strong>Pre-order</strong> to secure your unit today.
                 </p>
             </div>
           </aside>
@@ -184,7 +188,7 @@ export default function ShopClient() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10 sm:gap-10">
                 {filteredProducts.map((p, idx) => (
                     <motion.div 
                         key={p.id}
@@ -200,6 +204,8 @@ export default function ShopClient() {
                             imageUrl={p.imageUrl?.split(",")[0] || "/placeholder.jpg"}
                             category={p.category}
                             isLimited={p.isLimitedEdition}
+                            isPreOrder={p.isPreOrder}
+                            isComingSoon={p.isComingSoon}
                             sizes={[
                                 { size: "M", stock: p.stockM },
                                 { size: "L", stock: p.stockL },
