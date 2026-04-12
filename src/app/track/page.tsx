@@ -143,6 +143,21 @@ export default function TrackPage() {
                     </div>
                   </a>
                 )}
+
+                <Link 
+                  href={`/invoice/${order.id}`} 
+                  target="_blank"
+                  className="bg-brand-paper p-6 rounded-2xl border border-brand-card hover:border-brand-neon transition-all group flex flex-col gap-2 shadow-lg"
+                >
+                  <div className="text-brand-neon flex items-center justify-between">
+                    <Download size={24} />
+                    <ExternalLink size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold">Download Invoice</h3>
+                    <p className="text-xs text-brand-muted">Get your official digital receipt (PDF)</p>
+                  </div>
+                </Link>
                 
                 <Link 
                   href="/"
