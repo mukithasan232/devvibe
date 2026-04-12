@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Package, User as UserIcon, Truck, CheckCircle2, Edit3, Save, Search, LogOut } from "lucide-react";
+import { Package, User as UserIcon, Truck, CheckCircle2, Edit3, Save, Search, LogOut, Activity } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/components/LanguageContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,21 +20,6 @@ export default function CustomerProfile() {
   });
 
   const [searchId, setSearchId] = useState("");
-
-  useEffect(() => {
-    setMounted(true);
-    const saved = localStorage.getItem("devvibe-customer");
-    if (saved) {
-      setCustomer(JSON.parse(saved));
-    }
-  }, []);
-
-  const handleSave = () => {
-    localStorage.setItem("devvibe-customer", JSON.stringify(customer));
-    setIsEditing(false);
-  };
-
-  // Mock orders for visual completeness (in production, fetch these via API based on phone/email)
   const [orders, setOrders] = useState<any[]>([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
 

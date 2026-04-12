@@ -1,6 +1,6 @@
 "use client";
 
-import { Package, ShoppingBag, LayoutDashboard, Lock, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingBag, Settings, LogOut, User as UserIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
