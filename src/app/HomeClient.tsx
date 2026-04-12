@@ -21,6 +21,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import TrustBar from "@/components/TrustBar";
 import Link from "next/link";
+import ProductCard from "@/components/ProductCard";
 
 interface ProductShape {
   id: string;
@@ -189,30 +190,20 @@ export default function HomeClient() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.1 }}
-                    className="group flex flex-col"
                 >
-                    <div className="relative aspect-[3/4] rounded-3xl overflow-hidden bg-brand-paper border border-brand-card group-hover:border-brand-neon/50 transition-all mb-8 shadow-xl">
-                        <Image 
-                            src={p.imageUrl?.split(",")[0] || "https://devvibe.com/placeholder.jpg"}
-                            alt={p.name}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-700"
-                            sizes="(max-width: 768px) 100vw, 25vw"
-                        />
-                        <div className="absolute inset-0 bg-brand-bg/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                            <button 
-                                onClick={() => handleAddToCart(p)}
-                                className="bg-brand-neon text-brand-bg p-5 rounded-2xl shadow-[0_0_30px_rgba(57,255,20,0.4)] transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 hover:scale-110 active:scale-90"
-                            >
-                                <ShoppingBag size={28} />
-                            </button>
-                        </div>
-                    </div>
-                    <div className="px-4">
-                        <p className="text-brand-neon font-black text-[10px] uppercase tracking-[0.3em] mb-2">{p.category}</p>
-                        <h3 className="text-white font-black text-xl mb-2 group-hover:text-brand-neon transition-colors truncate tracking-tight">{p.name}</h3>
-                        <p className="text-white/80 font-black text-lg">৳{p.price}</p>
-                    </div>
+                    <ProductCard
+                        id={p.id}
+                        name={p.name}
+                        price={p.price}
+                        imageUrl={p.imageUrl?.split(",")[0] || "https://devvibe.com/placeholder.jpg"}
+                        category={p.category}
+                        sizes={[
+                          { size: "M", stock: p.stockM },
+                          { size: "L", stock: p.stockL },
+                          { size: "XL", stock: p.stockXL },
+                          { size: "XXL", stock: p.stockXXL },
+                        ]}
+                    />
                 </motion.div>
             ))}
             </div>
