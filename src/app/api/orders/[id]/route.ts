@@ -41,7 +41,7 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const { customerName, customerPhone, customerAddress, status } = await req.json();
+    const { customerName, customerPhone, customerAddress, status, isPaid } = await req.json();
 
     const order = await prisma.order.update({
       where: { id: id },
@@ -50,6 +50,7 @@ export async function PATCH(
         customerPhone,
         customerAddress,
         status,
+        isPaid,
       },
       include: {
           items: {

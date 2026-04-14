@@ -47,6 +47,11 @@ export default function AdminProducts() {
     isComingSoon: false,
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterLowStock, setFilterLowStock] = useState(false);
+  const [smartAddInput, setSmartAddInput] = useState("");
+  const [isPurging, setIsPurging] = useState(false);
+
   const fetchProducts = async () => {
     setLoading(true);
     setError(null);
@@ -143,6 +148,7 @@ export default function AdminProducts() {
       isLimitedEdition: formData.isLimitedEdition,
       isPreOrder: formData.isPreOrder,
       isComingSoon: formData.isComingSoon,
+      isPublished: true, // Default to true for manual adds
     };
 
     try {
@@ -188,21 +194,113 @@ export default function AdminProducts() {
       alert(err instanceof Error ? err.message : "Unknown error toggling feature");
     }
   };
+  const handlePurge = async () => {
+    if (!confirm("CRITICAL: This will delete ALL products and order history. Proceed?")) return;
+    setIsPurging(true);
+    try {
+      const res = await fetch("/api/admin/products/purge", { method: "DELETE" });
+      if (!res.ok) throw new Error("Purge failed");
+      setProducts([]);
+      alert("Inventory Zeroed Out.");
+    } catch (err) {
+      alert("Error purging inventory");
+    } finally {
+      setIsPurging(false);
+    }
+  };
+
+  const handleSmartAdd = async () => {
+    if (!smartAddInput.trim()) return;
+    
+    // Simple parser for "Name | Price | Stock" or just "Name"
+    const parts = smartAddInput.split("|").map(p => p.trim());
+    const name = parts[0];
+    const price = parts[1] || "500";
+    const stock = parts[2] || "10";
+
+    setFormData({
+      ...formData,
+      name,
+      price,
+      stockM: stock,
+      stockL: stock,
+      stockXL: stock,
+      stockXXL: stock,
+    });
+    setSmartAddInput("");
+    setIsModalOpen(true);
+  };
+
+  const filteredProducts = products.filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          p.category.toLowerCase().includes(searchQuery.toLowerCase());
+    const isLow = p.stockM < 5 || p.stockL < 5 || p.stockXL < 5 || p.stockXXL < 5;
+    return matchesSearch && (!filterLowStock || isLow);
+  });
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-black text-white italic tracking-tighter uppercase">Command Center <span className="text-brand-neon">/ Products</span></h1>
-        <button onClick={() => openForm()} className="bg-brand-neon text-brand-bg px-6 py-2.5 rounded-xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform shadow-[0_0_25px_rgba(57,255,20,0.3)] italic">
-          + Initialize Entry
-        </button>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-black text-white italic tracking-tighter uppercase">Command Center <span className="text-brand-neon">/ Inventory</span></h1>
+          <p className="text-brand-muted text-xs font-bold uppercase tracking-widest mt-1">Status: {products.length} Units Online</p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <button 
+            onClick={handlePurge} 
+            disabled={isPurging}
+            className="border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2.5 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all"
+          >
+            {isPurging ? "Purging..." : "Purge Inventory"}
+          </button>
+          <button onClick={() => openForm()} className="bg-brand-neon text-brand-bg px-6 py-2.5 rounded-xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform shadow-[0_0_25px_rgba(57,255,20,0.3)] italic">
+            + Manual Entry
+          </button>
+        </div>
       </div>
 
-      {loading && <div className="p-20 text-center animate-pulse"><p className="text-brand-neon font-black tracking-widest">QUERYING INVENTORY...</p></div>}
+      {/* Advanced Filters */}
+      <div className="bg-brand-paper border border-brand-card p-4 rounded-2xl flex flex-col md:flex-row gap-4 items-center">
+        <div className="flex-1 w-full">
+          <input 
+            type="text" 
+            placeholder="Search by name or category..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-brand-bg border border-brand-card px-4 py-2.5 rounded-xl text-white text-sm focus:border-brand-neon outline-none"
+          />
+        </div>
+        <div className="flex items-center gap-3 w-full md:w-auto">
+          <button 
+            onClick={() => setFilterLowStock(!filterLowStock)}
+            className={`px-4 py-2.5 rounded-xl font-black uppercase tracking-widest text-[10px] border transition-all ${filterLowStock ? 'bg-yellow-500 border-yellow-500 text-brand-bg' : 'border-brand-card text-brand-muted hover:text-white'}`}
+          >
+            Low Stock Only
+          </button>
+          <div className="h-10 w-[1px] bg-brand-card hidden md:block" />
+          <div className="flex gap-2 w-full md:w-auto">
+            <input 
+              type="text" 
+              placeholder="Smart Add: Name | Price | Stock" 
+              value={smartAddInput}
+              onChange={(e) => setSmartAddInput(e.target.value)}
+              className="bg-brand-bg border border-brand-card px-4 py-2.5 rounded-xl text-white text-sm focus:border-brand-neon outline-none flex-1"
+            />
+            <button 
+              onClick={handleSmartAdd}
+              className="bg-white text-brand-bg px-4 py-2.5 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-brand-neon transition-colors"
+            >
+              Parse
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {loading && <div className="p-20 text-center animate-pulse"><p className="text-brand-neon font-black tracking-widest">QUERYING MAINFRAME...</p></div>}
       {error && <p className="text-red-400 p-4 bg-red-500/10 border border-red-500/50 rounded-xl">{error}</p>}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-        {products.map((p) => (
+        {filteredProducts.map((p) => (
           <div key={p.id} className="relative group">
             <SmartProductCard
               product={{

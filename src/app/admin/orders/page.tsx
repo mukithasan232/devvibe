@@ -18,6 +18,7 @@ interface OrderShape {
   items: any[];
   trxId?: string | null;
   courierTrackingId?: string | null;
+  isPaid: boolean;
 }
 
 export default function AdminOrders() {
@@ -82,6 +83,20 @@ export default function AdminOrders() {
       }
   };
 
+  const handleTogglePaid = async (order: OrderShape) => {
+    try {
+        const res = await fetch(`/api/orders/${order.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ...order, isPaid: !order.isPaid }),
+        });
+        if (!res.ok) throw new Error("Failed update");
+        fetchOrders();
+    } catch (error) {
+        alert("Failed to update payment status");
+    }
+  };
+
   const handleSendToCourier = async (orderId: string) => {
       try {
           setCourierLoading(orderId);
@@ -143,23 +158,46 @@ export default function AdminOrders() {
                   </td>
                   <td className="px-8 py-6">
                     <div className="text-white font-black text-lg">৳{order.totalAmount}</div>
-                    <div className="text-[10px] text-brand-neon font-bold uppercase tracking-wider">{order.paymentMethod}</div>
+                    <div className="flex flex-col gap-1 mt-1">
+                        <div className="text-[10px] text-brand-neon font-bold uppercase tracking-wider">{order.paymentMethod}</div>
+                        {order.trxId && (
+                            <div className="bg-brand-bg px-2 py-0.5 rounded border border-brand-card text-[9px] font-mono text-white/70 overflow-hidden text-ellipsis max-w-[120px]">
+                                TRX: {order.trxId}
+                            </div>
+                        )}
+                    </div>
                   </td>
                   <td className="px-8 py-6">
-                    <select
-                      value={order.status}
-                      onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
-                      className={`px-4 py-2 rounded-xl text-[10px] font-black tracking-widest outline-none transition-all cursor-pointer border ${
-                        order.status === 'PENDING' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
-                        order.status === 'PROCESSING' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
-                        order.status === 'DELIVERED' ? 'bg-green-500/10 text-brand-neon border-brand-neon/20' :
-                        'bg-brand-card text-white border-brand-card'
-                      }`}
-                    >
-                      {['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'].map(s => (
-                        <option key={s} value={s}>{s}</option>
-                      ))}
-                    </select>
+                    <div className="flex flex-col gap-3">
+                        <select
+                          value={order.status}
+                          onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
+                          className={`px-4 py-2 rounded-xl text-[10px] font-black tracking-widest outline-none transition-all cursor-pointer border ${
+                            order.status === 'PENDING' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
+                            order.status === 'PROCESSING' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
+                            order.status === 'DELIVERED' ? 'bg-green-500/10 text-brand-neon border-brand-neon/20' :
+                            'bg-brand-card text-white border-brand-card'
+                          }`}
+                        >
+                          {['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'].map(s => (
+                            <option key={s} value={s}>{s}</option>
+                          ))}
+                        </select>
+                        <button 
+                            onClick={() => handleTogglePaid(order)}
+                            className={`flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg border text-[9px] font-black uppercase tracking-widest transition-all ${
+                                order.isPaid 
+                                ? 'bg-green-500 text-brand-bg border-green-500' 
+                                : 'bg-red-500/10 text-red-500 border-red-500/30 hover:bg-red-500 hover:text-white'
+                            }`}
+                        >
+                            {order.isPaid ? (
+                                <><CheckCircle2 size={12} /> Verified</>
+                            ) : (
+                                <><X size={12} /> Not Verified</>
+                            )}
+                        </button>
+                    </div>
                   </td>
                   <td className="px-8 py-6 text-right">
                     <div className="flex justify-end gap-2">
