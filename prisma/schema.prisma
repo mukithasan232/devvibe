@@ -19,6 +19,7 @@ model Product {
   category    String   @default("Round Neck") // Round Neck, Drop Shoulder, Minimalist
   
   // Specific inventory sizing
+  stockS      Int      @default(0)
   stockM      Int      @default(0)
   stockL      Int      @default(0)
   stockXL     Int      @default(0)

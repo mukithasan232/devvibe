@@ -14,6 +14,7 @@ interface ProductShape {
   price: number;
   imageUrl: string;
   category: string;
+  stockS: number;
   stockM: number;
   stockL: number;
   stockXL: number;
@@ -38,6 +39,7 @@ export default function AdminProducts() {
     costPrice: "",
     imageUrls: [] as string[],
     category: "Solid",
+    stockS: "0",
     stockM: "0",
     stockL: "0",
     stockXL: "0",
@@ -101,6 +103,7 @@ export default function AdminProducts() {
         costPrice: (product.costPrice ?? 0).toString(),
         imageUrls: product.imageUrl ? product.imageUrl.split(",") : [],
         category: product.category,
+        stockS: product.stockS.toString(),
         stockM: product.stockM.toString(),
         stockL: product.stockL.toString(),
         stockXL: product.stockXL.toString(),
@@ -118,6 +121,7 @@ export default function AdminProducts() {
         costPrice: "0",
         imageUrls: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop"],
         category: "Solid",
+        stockS: "0",
         stockM: "0",
         stockL: "0",
         stockXL: "0",
@@ -141,6 +145,7 @@ export default function AdminProducts() {
       costPrice: Number(formData.costPrice),
       imageUrl: formData.imageUrls.join(","),
       category: formData.category,
+      stockS: Number(formData.stockS),
       stockM: Number(formData.stockM),
       stockL: Number(formData.stockL),
       stockXL: Number(formData.stockXL),
@@ -222,6 +227,7 @@ export default function AdminProducts() {
       ...formData,
       name,
       price,
+      stockS: stock,
       stockM: stock,
       stockL: stock,
       stockXL: stock,
@@ -234,7 +240,7 @@ export default function AdminProducts() {
   const filteredProducts = products.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           p.category.toLowerCase().includes(searchQuery.toLowerCase());
-    const isLow = p.stockM < 5 || p.stockL < 5 || p.stockXL < 5 || p.stockXXL < 5;
+    const isLow = p.stockS < 5 || p.stockM < 5 || p.stockL < 5 || p.stockXL < 5 || p.stockXXL < 5;
     return matchesSearch && (!filterLowStock || isLow);
   });
 
@@ -311,6 +317,7 @@ export default function AdminProducts() {
                 category: p.category,
                 isLimited: p.isLimitedEdition,
                 sizes: [
+                  { size: "S", stock: p.stockS },
                   { size: "M", stock: p.stockM },
                   { size: "L", stock: p.stockL },
                   { size: "XL", stock: p.stockXL },
@@ -391,6 +398,17 @@ export default function AdminProducts() {
                       placeholder="450"
                     />
                   </div>
+                  <div className="space-y-3">
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-muted">Unit Cost (BDT)</label>
+                    <input 
+                      value={formData.costPrice} 
+                      required 
+                      type="number" 
+                      onChange={(e) => setFormData({ ...formData, costPrice: e.target.value })} 
+                      className="w-full bg-brand-bg border border-brand-card rounded-2xl px-5 py-4 text-white focus:border-brand-neon outline-none italic" 
+                      placeholder="e.g. 250"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-3">
@@ -448,7 +466,7 @@ export default function AdminProducts() {
                 <div className="space-y-3">
                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-muted">Inventory Matrix (Stocks)</label>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    {["M", "L", "XL", "XXL"].map((sz) => (
+                    {["S", "M", "L", "XL", "XXL"].map((sz) => (
                       <div key={sz} className="space-y-2">
                         <span className="text-[9px] font-bold text-brand-muted block text-center">{sz}</span>
                         <input 

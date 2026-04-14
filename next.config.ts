@@ -15,6 +15,18 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'upload.wikimedia.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'e7.pngegg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',
       }
     ],
   },
@@ -45,7 +57,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api.qrserver.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://devvibe.com https://api.qrserver.com https://res.cloudinary.com; connect-src 'self';",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api.qrserver.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://devvibe.com https://api.qrserver.com https://res.cloudinary.com https://upload.wikimedia.org https://e7.pngegg.com https://i.pravatar.cc; connect-src 'self' https://www.google-analytics.com https://stats.g.doubleclick.net;",
           },
         ],
       },

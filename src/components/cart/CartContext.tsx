@@ -27,23 +27,27 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") return [];
-    const saved = localStorage.getItem("devvibe-cart");
-    if (!saved) return [];
-
-    try {
-      return JSON.parse(saved) as CartItem[];
-    } catch {
-      localStorage.removeItem("devvibe-cart");
-      return [];
-    }
-  });
+  const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("devvibe-cart", JSON.stringify(items));
-  }, [items]);
+    const saved = localStorage.getItem("devvibe-cart");
+    if (saved) {
+      try {
+        setItems(JSON.parse(saved));
+      } catch (err) {
+        console.error("Cart Init Error:", err);
+      }
+    }
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem("devvibe-cart", JSON.stringify(items));
+    }
+  }, [items, isLoaded]);
 
   const addToCart = (item: Omit<CartItem, "id">) => {
     setItems((prev) => {

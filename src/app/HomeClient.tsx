@@ -29,6 +29,7 @@ interface ProductShape {
   price: number;
   imageUrl: string;
   category: string;
+  stockS: number;
   stockM: number;
   stockL: number;
   stockXL: number;
@@ -204,6 +205,7 @@ export default function HomeClient() {
                         isPreOrder={p.isPreOrder}
                         isComingSoon={p.isComingSoon}
                         sizes={[
+                          { size: "S", stock: p.stockS },
                           { size: "M", stock: p.stockM },
                           { size: "L", stock: p.stockL },
                           { size: "XL", stock: p.stockXL },
@@ -236,6 +238,66 @@ export default function HomeClient() {
                         fill 
                         className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
                       />
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      {/* Secure Infrastructure (Payment & Trust) */}
+      <section className="bg-brand-bg py-24 border-b border-brand-paper relative">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex flex-col items-center text-center mb-16">
+                  <div className="bg-brand-neon/10 border border-brand-neon/30 text-brand-neon px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-6">Execution Gateways</div>
+                  <h2 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase mb-4">Secure Payment Logic</h2>
+                  <p className="text-brand-muted max-w-2xl font-medium">Encrypted transactions via industry-standard protocols. Pay with confidence using your preferred stack.</p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                  <div className="bg-brand-paper/50 border border-brand-card p-8 rounded-3xl flex flex-col items-center gap-4 hover:border-brand-neon/40 transition-all group">
+                      <div className="w-16 h-10 relative opacity-50 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0">
+                          <Image src="https://upload.wikimedia.org/wikipedia/commons/e/e1/SSLCommerz_Logo.png" alt="SSLCommerz" fill className="object-contain" />
+                      </div>
+                      <span className="text-[10px] font-bold text-brand-muted uppercase tracking-widest text-center mt-2">Verified Aggregate</span>
+                  </div>
+                  <div className="bg-brand-paper/50 border border-brand-card p-8 rounded-3xl flex flex-col items-center gap-4 hover:border-brand-neon/40 transition-all group">
+                      <div className="w-16 h-10 relative opacity-50 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0">
+                            <Image src="https://upload.wikimedia.org/wikipedia/commons/e/ed/Bkash_logo.png" alt="bKash" fill className="object-contain" />
+                      </div>
+                      <span className="text-[10px] font-bold text-brand-muted uppercase tracking-widest text-center mt-2">Instant Settlement</span>
+                  </div>
+                  <div className="bg-brand-paper/50 border border-brand-card p-8 rounded-3xl flex flex-col items-center gap-4 hover:border-brand-neon/40 transition-all group">
+                      <div className="w-16 h-10 relative opacity-50 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0">
+                            <Image src="https://e7.pngegg.com/pngimages/142/57/png-clipart-logo-nagad-font-nagad-logo-miscellaneous-text.png" alt="Nagad" fill className="object-contain" />
+                      </div>
+                      <span className="text-[10px] font-bold text-brand-muted uppercase tracking-widest text-center mt-2">Digital Wallet</span>
+                  </div>
+                   <div className="bg-brand-paper/50 border border-brand-card p-8 rounded-3xl flex flex-col items-center gap-4 hover:border-brand-neon/40 transition-all group">
+                      <div className="w-16 h-12 bg-brand-neon/10 rounded-xl flex items-center justify-center text-brand-neon">
+                          <ShoppingBag size={24} />
+                      </div>
+                      <span className="text-[10px] font-bold text-brand-muted uppercase tracking-widest text-center">Cash On Delivery</span>
+                  </div>
+              </div>
+
+              <div className="mt-20 p-8 md:p-12 rounded-[40px] bg-gradient-to-r from-brand-paper to-brand-bg border border-brand-card flex flex-col md:flex-row items-center justify-between gap-8">
+                  <div className="flex items-center gap-6">
+                      <div className="w-16 h-16 rounded-2xl bg-brand-neon flex items-center justify-center text-brand-bg shadow-[0_0_30px_rgba(57,255,20,0.4)]">
+                          <Leaf size={32} />
+                      </div>
+                      <div>
+                          <h4 className="text-xl font-black text-white italic tracking-tighter">SUSTAINABLE BUILD</h4>
+                          <p className="text-brand-muted text-sm font-medium">Organic cotton, non-toxic dyes, zero waste policy.</p>
+                      </div>
+                  </div>
+                  <div className="flex -space-x-4">
+                      {[1,2,3,4,5].map(i => (
+                          <div key={i} className="w-10 h-10 rounded-full border-2 border-brand-bg bg-brand-card overflow-hidden">
+                              <Image src={`https://i.pravatar.cc/100?u=${i}`} alt="user" width={40} height={40} />
+                          </div>
+                      ))}
+                      <div className="w-10 h-10 rounded-full border-2 border-brand-bg bg-brand-neon flex items-center justify-center text-[10px] font-black text-brand-bg">
+                          4.9★
+                      </div>
                   </div>
               </div>
           </div>

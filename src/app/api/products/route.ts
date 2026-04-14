@@ -16,7 +16,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, description, price, imageUrl, category, stockM, stockL, stockXL, stockXXL } = body;
+    const { name, description, price, costPrice, imageUrl, category, stockS, stockM, stockL, stockXL, stockXXL } = body;
 
     if (!name || !price) {
       return NextResponse.json({ error: "Missing required product fields" }, { status: 400 });
@@ -27,8 +27,10 @@ export async function POST(req: Request) {
         name,
         description: description ?? "",
         price: Number(price),
+        costPrice: Number(costPrice ?? 0),
         imageUrl: imageUrl || "https://devvibe.com/default-product.jpg",
         category: category || "Round Neck",
+        stockS: Number(stockS ?? 0),
         stockM: Number(stockM ?? 0),
         stockL: Number(stockL ?? 0),
         stockXL: Number(stockXL ?? 0),

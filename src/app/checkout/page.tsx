@@ -245,6 +245,15 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                 </label>
+                <label className={`block p-4 border rounded-xl cursor-pointer transition-colors ${paymentMethod === "CASH_ON_DELIVERY" ? "border-brand-neon bg-brand-neon/5" : "border-brand-card bg-brand-bg hover:border-brand-muted"}`}>
+                  <div className="flex items-center gap-4">
+                    <input type="radio" name="payment" value="CASH_ON_DELIVERY" checked={paymentMethod === "CASH_ON_DELIVERY"} onChange={(e) => { setPaymentMethod(e.target.value); setTrxId(""); }} className="w-4 h-4 text-brand-neon" />
+                    <div className="flex-1">
+                      <span className="block text-white font-medium">Cash On Delivery</span>
+                      <span className="text-xs text-brand-muted">Pay ৳{finalTotal} at your doorstep</span>
+                    </div>
+                  </div>
+                </label>
               </div>
 
               {/* TrxID Input for Manual Methods */}

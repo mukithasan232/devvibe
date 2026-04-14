@@ -7,7 +7,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     const body = await req.json();
 
     const updateData: Record<string, unknown> = {};
-    const allowed = ["name", "description", "price", "costPrice", "imageUrl", "category", "stockM", "stockL", "stockXL", "stockXXL", "isPublished", "isLimitedEdition", "isPreOrder", "isComingSoon"];
+    const allowed = ["name", "description", "price", "costPrice", "imageUrl", "category", "stockS", "stockM", "stockL", "stockXL", "stockXXL", "isPublished", "isLimitedEdition", "isPreOrder", "isComingSoon"];
     for (const key of allowed) {
       if (body[key] !== undefined) updateData[key] = body[key];
     }

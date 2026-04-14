@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { AlertCircle, Edit, Trash2, Package } from "lucide-react";
 
 interface ProductSize {
-  size: "M" | "L" | "XL" | "XXL";
+  size: "S" | "M" | "L" | "XL" | "XXL";
   stock: number;
 }
 
@@ -110,7 +110,7 @@ export default function SmartProductCard({ product }: { product: ProductProps })
         </div>
 
         {/* Dynamic Multi-Size Stock Indicators */}
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-5 gap-1.5">
           {product.sizes.map(({ size, stock }) => (
             <div 
               key={size} 
